@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">>
+    <string name="app_name">Movie Zone</string>
+    <string name="nav_goto">ذحب الي</string>
+    <string name="nav_item_update">حديث</string>
+    <string name="nav_item_exit">خرج</string>
+    <string name="nav_sub_menu">Sub Menu</string>
+    <string name="nav_sub_menu_registrasi">ما ذا</string>
+    <string name="nav_sub_menu_help">نصر</string>
+    <string name="nav_item_setting">لا اعلم</string>
+    <string name="nav_sub_menu_share">Share</string>
+    <string name="nav_sub_menu_about">تعلمات</string>
+    <string name="nav_sub_menu_rate">المفضلة</string>
+    <string name="tab_searching">بحث</string>
+    <string name="tab_upcoming">ذهب</string>
+    <string name="tab_playing">فعل</string>
+    <string name="drawer_header_text">Movie Zone</string>
+    <string name="find_movie">Find Movie</string>
+    <string name="setting">Settings</string>
+    <string name="set_local">Setting Locale</string>
+    <string name="sets_local">Change your phone localization</string>
+    <string name="load_data_playing">Refresh</string>
+    <string name="release">Release Date</string>
+    <string name="overview">Overview</string>
+    <string name="popul">Popularity</string>
+    <string name="tab_favorite">Favorite</string>
+    <string name="home">Home</string>
+    <string name="prefen">Preferences</string>
+    <string name="notif">Notification</string>
+    <string name="notif_daily">Daily Remider Notification</string>
+    <string name="notif_upcoming">Upcoming Remaider Notification</string>
+    <string name="notifs_daily">Turn on/off daily remider</string>
+    <string name="notifs_upcoming">Turn on/off upcoming remider</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="kosong_text">NO DATA</string>
+    <string name="widget_text">UPCOMING MOVIE</string>
+    <string name="refresh">Refresh</string>
+    <string name="detail">Detail</string>
+    <string name="off_all">Semua notifikasi Aktif</string>
+    <string name="off_all_sum">Mematikan semua notifikasi</string>
+    <string name="menu_settings">Settings</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="search_not_found">Search not found</string>
+    <string name="navb_popular">Popular People</string>
+    <string name="navb_discovery">Discovery</string>
+    <string name="navb_tv">Television</string>
+    <string name="navb_movie">Movie</string>
+    <string name="tab_boxoffice">Box Office</string>
+    <string name="tab_popular">Popular</string>
+    <string name="tab_toprated">Top Rated</string>
+    <string name="tab_today">AIRING TODAY</string>
+    <string name="tab_ontheair">ON THE AIR</string>
+    <string name="navb_favorite">Favorite</string>
+    <string name="tab_view">View</string>
+    <string name="tab_imdbtop">IMDB TOP 250</string>
+    <string name="set_view">Display</string>
+    <string name="sets_view">List View or GridView</string>
+    <string name="todo">TODO</string>
+    <string name="tab_share">Share</string>
+    <string name="tab_info">INFO</string>
+    <string name="tab_cast">CAST</string>
+    <string name="tab_review">REVIEWS</string>
+    <string name="tab_airingtoday">AIRING TODAY</string>
+    <string name="releasedate">Release Date</string>
+    <string name="tx_directed">Directed By</string>
+    <string name="tx_budget">Budget</string>
+    <string name="tx_revenue">Revenue</string>
+    <string name="trailer">Trailers</string>
+    <string name="similar">Similar Movie</string>
+    <string name="tab_movie">MOVIES</string>
+    <string name="born">Born</string>
+    <string name="tx_birthplace">Birthplace</string>
+    <string name="images">Images</string>
+    <string name="tab_crews">Crew</string>
+    <string name="tab_tv_show">TV SHOWS</string>
+    <string name="acting">Acting</string>
+    <string name="crew">Crew</string>
+    <string name="set_adult">Adult</string>
+    <string name="sets_adult">Show Content Adult</string>
+    <string name="tab_grid">view grid</string>
+    <string name="slide_image">%1$s of %2$s</string>
+    <string name="tab_download">Download</string>
+    <string name="tab_actors">ACTORS</string>
+    <string name="tab_seasons">SEASONS</string>
+    <string name="firstairdate">First Air Date</string>
+    <string name="lastairdate">Last Air Date</string>
+    <string name="network">Networks</string>
+    <string name="tx_created_by">Created By</string>
+    <string name="tx_type">Show Type</string>
+    <string name="tx_status">Show Status</string>
+    <string name="season">Season</string>
+    <string name="episode">Episode</string>
+    <string name="kualiatas_image">Image Quality</string>
+    <string name="tab_people">Popular Person</string>
+    <string name="tab_link_donlot">LINK DOWNLOAD</string>
+    <string name="app_link">market://search?q=pub:smk.adzikro.moviezone</string>
+    <string-array name="image_size">
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+    </string-array>
+    <string-array name="image_value">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="type">
+        <item>Movie</item>
+        <item>Tv</item>
+    </string-array>
+    <string-array name="sort">
+        <item>Popularity</item>
+        <item>Revenue</item>
+        <item>Vote</item>
+        <item>Release</item>
+    </string-array>
+    <string-array name="sort_value">
+        <item>popularity.desc</item>
+        <item>revenue.desc</item>
+        <item>vote_average.desc</item>
+        <item>release_date.desc</item>
+    </string-array>
+</resources>

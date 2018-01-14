@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/navb_movie"
+        android:title="@string/navb_movie"
+        app:showAsAction="withText"
+        android:icon="@drawable/camcorder_box" />
+    <item android:id="@+id/navb_tv"
+        android:title="@string/navb_tv"
+        app:showAsAction="withText"
+        android:icon="@drawable/television_classic" />
+    <item android:id="@+id/navb_popular"
+        android:title="@string/navb_popular"
+        app:showAsAction="withText"
+        android:icon="@drawable/account_circle" />
+    <item android:id="@+id/navb_naon"
+        android:title="@string/navb_favorite"
+        app:showAsAction="withText"
+        android:icon="@drawable/bookmark" />
+</menu>

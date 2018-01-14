@@ -1,0 +1,33 @@
+<android.support.design.widget.CoordinatorLayout android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@android:color/transparent"
+        android:id="@+id/appbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways">
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/info"
+                tools:text="Image 1 from 4"
+                android:textColor="@color/white"
+                style="@style/Base.TextAppearance.AppCompat.Medium"
+                android:gravity="start|center_vertical"
+                android:layout_height="match_parent" />
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/pager"></android.support.v4.view.ViewPager>
+</android.support.design.widget.CoordinatorLayout>

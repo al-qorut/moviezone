@@ -1,0 +1,52 @@
+<android.support.design.widget.CoordinatorLayout android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appbar"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark">
+        <android.support.v7.widget.Toolbar
+            android:layout_marginTop="@dimen/spacing_xlarge"
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <Spinner
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/type"
+                    android:id="@+id/type"/>
+                <Spinner
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/sampai"/>
+                <Spinner
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/genre"/>
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/sort"
+                    android:id="@+id/sort"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/result"
+        tools:text="Hasil Pencarian"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_height="wrap_content"/>
+    <include layout="@layout/upcoming_layout"/>
+</android.support.design.widget.CoordinatorLayout>

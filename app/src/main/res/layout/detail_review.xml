@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/spacing_large"
+    android:layout_marginRight="@dimen/spacing_medium"
+    android:layout_marginBottom="@dimen/spacing_xlarge"
+    android:layout_marginTop="@dimen/spacing_xlarge"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:maxLines="1"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:id="@+id/title"
+        tools:text="Review By"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:maxLines="1"
+        android:id="@+id/author"
+        tools:text="By Omon suromon"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="italic"
+        android:maxLines="1"
+        android:textColor="@color/colorAccent"
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:id="@+id/url"
+        tools:text="https://amamam.com"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Base.TextAppearance.AppCompat.Small"
+        android:id="@+id/content"
+        android:textColor="@color/black"
+        tools:text="ieu eusina"/>
+</LinearLayout>

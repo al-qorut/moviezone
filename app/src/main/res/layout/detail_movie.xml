@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/coordinator"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
+
+
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:id="@+id/appbar"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
+            android:fitsSystemWindows="true">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/imageshow"
+                android:layout_width="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:layout_height="match_parent"/>
+            <smk.adzikro.moviezone.widget.TopImageView
+                android:id="@+id/slidingImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/cover"
+                android:scaleType="centerCrop"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax"/>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:layout_collapseMode="pin" />
+            <smk.adzikro.moviezone.custom.CirclePageIndicator
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="120dp"
+                android:layout_gravity="bottom"
+                android:id="@+id/imageindicator"/>
+
+            <FrameLayout
+                android:background="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_gravity="bottom"
+                app:layout_collapseMode="parallax"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:layout_height="80dp">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:id="@+id/infoMovie"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="120dp"
+                        android:layout_height="80dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:maxLines="1"
+                            android:id="@+id/info"
+                            android:textColor="@android:color/white"
+                            tools:text="PG-13 * 2017 * 1 hr 36 menit"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:id="@+id/titleBold"
+                            android:maxLines="1"
+                            style="@style/Base.TextAppearance.AppCompat.Large"
+                            android:textColor="@android:color/white"
+                            tools:text="Batman Bingung"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/type"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@android:color/white"
+                            style="@style/Base.TextAppearance.AppCompat.Small"
+                            tools:text="Bodor, Horor, Darama"/>
+                     </LinearLayout>
+            </FrameLayout>
+            <ImageView
+                android:layout_marginLeft="20dp"
+                android:layout_width="100dp"
+                android:layout_height="120dp"
+                android:background="@android:color/transparent"
+                android:id="@+id/photo"
+                android:layout_gravity="bottom|left"
+                app:layout_collapseMode="parallax"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cover"/>
+        </android.support.design.widget.CollapsingToolbarLayout>
+        <smk.adzikro.moviezone.custom.SlidingTabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal"
+            android:clickable="true"
+            android:id="@+id/tabs"
+            android:fillViewport="false"
+            app:tabMode="fixed"
+            app:tabGravity="fill"/>
+    </android.support.design.widget.AppBarLayout>
+            <ProgressBar
+                android:layout_width="30dp"
+                android:id="@+id/progress"
+                android:layout_height="30dp"
+                app:layout_anchor="@id/appbar"
+                app:layout_anchorGravity="bottom|center"
+                android:layout_gravity="center"/>
+            <android.support.v4.view.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:id="@+id/pager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </android.support.design.widget.CoordinatorLayout>

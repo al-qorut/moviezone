@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/notif">
+        <SwitchPreference
+            android:key="allnotif"
+            android:title="@string/off_all"
+            android:defaultValue="true"
+            android:summary="@string/off_all_sum"/>
+    <SwitchPreference
+        android:clickable="true"
+        android:key="dailyremaider"
+        android:title="@string/notif_daily"
+        android:defaultValue="true"
+        android:dependency="allnotif"
+        android:summary="@string/notifs_daily"/>
+    <SwitchPreference
+        android:clickable="true"
+        android:key="upcomingremaider"
+        android:defaultValue="true"
+        android:dependency="allnotif"
+        android:title="@string/notif_upcoming"
+        android:summary="@string/notifs_upcoming"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/setting">
+        <Preference
+            android:key="local"
+            android:title="@string/set_local"
+            android:summary="@string/sets_local"
+            android:persistent="true"/>
+    </PreferenceCategory>
+        <SwitchPreference
+            android:key="view"
+            android:title="@string/set_view"
+            android:defaultValue="true"
+            android:summary="@string/sets_view"
+            android:persistent="true"/>
+    <SwitchPreference
+        android:key="adult"
+        android:title="@string/set_adult"
+        android:defaultValue="true"
+        android:summary="@string/sets_adult"
+        android:persistent="true"/>
+    <ListPreference
+        android:key="kualitasimage"
+        android:title="@string/kualiatas_image"
+        android:entries="@array/image_size"
+        android:entryValues="@array/image_value"/>
+
+</PreferenceScreen>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#175271</color>
+    <color name="colorPrimaryDark">#175271</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="panel_background_color">#004850</color>
+    <color name="nav_bottom">#0f92a1</color>
+    <color name="linkColor">#42a5f5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="colorDivider">#E6E6E6</color>
+    <color name="vpi__background_holo_dark">#ff000000</color>
+    <color name="vpi__background_holo_light">#fff3f3f3</color>
+    <color name="tranparan">#f0f0f0</color>
+    <color name="vpi__bright_foreground_holo_dark">@color/vpi__background_holo_light</color>
+    <color name="vpi__bright_foreground_holo_light">@color/vpi__background_holo_dark</color>
+    <color name="vpi__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
+    <color name="vpi__bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <color name="vpi__bright_foreground_inverse_holo_dark">@color/vpi__bright_foreground_holo_light</color>
+    <color name="vpi__bright_foreground_inverse_holo_light">@color/vpi__bright_foreground_holo_dark</color>
+    <color name="actionbar_bg">#FF0099CC</color>
+    <color name="statusbar_bg">#FF006080</color>
+</resources>

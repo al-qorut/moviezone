@@ -1,13 +1,12 @@
 package smk.adzikro.moviezone.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import smk.adzikro.moviezone.fragments.FragmentBlank;
 import smk.adzikro.moviezone.fragments.FragmentListMovie;
 import smk.adzikro.moviezone.fragments.FragmentListTv;
-import smk.adzikro.moviezone.fragments.FragmentPersonPopular;
 import smk.adzikro.moviezone.fragments.fragment_favorite;
 import smk.adzikro.moviezone.net.SearchClient;
 
@@ -21,7 +20,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     public ViewPagerAdapter(FragmentManager fm,
     CharSequence mTitle[], int TabCount) {
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.title = mTitle;
         this.TabCount = TabCount;
     }

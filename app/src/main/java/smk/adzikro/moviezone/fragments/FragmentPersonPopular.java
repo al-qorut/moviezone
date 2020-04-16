@@ -1,35 +1,29 @@
 package smk.adzikro.moviezone.fragments;
 
-import android.graphics.drawable.Drawable;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.content.AsyncTaskLoader;
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.util.ArrayList;
-import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import smk.adzikro.moviezone.R;
@@ -48,11 +42,12 @@ public class FragmentPersonPopular extends Fragment
         LoaderManager.LoaderCallbacks<ArrayList<Actor>> {
     private static final String KEY = "kunci";
     private static final String TAG = "people";
-    private int page = 1;
     RecyclerView recyclerView;
     ArrayList<Actor> listActor = new ArrayList<>();
     ListPeople adapter;
+    private int page = 1;
     private ProgressBar loading;
+    private boolean loadingPertama = true;
 
     public static FragmentPersonPopular newInstance(int page) {
         FragmentPersonPopular popular = new FragmentPersonPopular();
@@ -70,8 +65,8 @@ public class FragmentPersonPopular extends Fragment
         }else{
             page = getArguments().getInt(KEY,0);
         }
-        recyclerView = (RecyclerView) view.findViewById(R.id.list_movie);
-        loading = (ProgressBar)view.findViewById(R.id.loading);
+        recyclerView = view.findViewById(R.id.list_movie);
+        loading = view.findViewById(R.id.loading);
         loading.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
        // recyclerView.setHasFixedSize(true);
@@ -81,6 +76,7 @@ public class FragmentPersonPopular extends Fragment
         adapter.setOnLoadMoreListener(this);
         return view;
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -136,18 +132,15 @@ public class FragmentPersonPopular extends Fragment
 
     }
 
-
-    private boolean loadingPertama = true;
-
     public class HolderView extends RecyclerView.ViewHolder {
         CircleImageView photo;
         TextView nama, nomor;
 
         public HolderView(View itemView) {
             super(itemView);
-            photo = (CircleImageView) itemView.findViewById(R.id.id_photo);
-            nama = (TextView) itemView.findViewById(R.id.nama_actor);
-            nomor = (TextView) itemView.findViewById(R.id.peran);
+            photo = itemView.findViewById(R.id.id_photo);
+            nama = itemView.findViewById(R.id.nama_actor);
+            nomor = itemView.findViewById(R.id.peran);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -165,23 +158,15 @@ public class FragmentPersonPopular extends Fragment
 
         public LoadingHolder(View view) {
             super(view);
-            progressBar = (ProgressBar) view.findViewById(R.id.loadmore);
+            progressBar = view.findViewById(R.id.loadmore);
         }
     }
 
     private class ListPeople extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        private boolean isLoading ;
-        OnLoadMoreListener onLoadMoreListener;
         private final int  TYPE_VIEW = 0;
         private final int TYPE_LOADING = 1;
-
-        public OnLoadMoreListener getOnLoadMoreListener() {
-            return onLoadMoreListener;
-        }
-
-        public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-            this.onLoadMoreListener = onLoadMoreListener;
-        }
+        OnLoadMoreListener onLoadMoreListener;
+        private boolean isLoading;
 
         public ListPeople() {
             final LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
@@ -204,6 +189,15 @@ public class FragmentPersonPopular extends Fragment
             });
 
         }
+
+        public OnLoadMoreListener getOnLoadMoreListener() {
+            return onLoadMoreListener;
+        }
+
+        public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+            this.onLoadMoreListener = onLoadMoreListener;
+        }
+
         @Override
         public int getItemViewType(int pos) {
             return listActor.get(pos) == null ? TYPE_LOADING : TYPE_VIEW;
@@ -229,26 +223,21 @@ public class FragmentPersonPopular extends Fragment
             if (holder instanceof HolderView) {
                 Glide.with(getContext()).load(SearchClient.getImagePath(getContext()) + actor.getPhoto())
                         .thumbnail(0.5f)
-                        .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .listener(new RequestListener<String, GlideDrawable>() {
+                        .into(new CustomTarget<Drawable>() {
                             @Override
-                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                return false;
-                            }
-                        })
-                        .into(new SimpleTarget<GlideDrawable>() {
-                            @Override
-                            public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                                 ((HolderView) holder).photo.setImageDrawable(resource);
                                 ((HolderView) holder).photo.setDrawingCacheEnabled(true);
                             }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                            }
                         });
+
+
                 ((HolderView) holder).nama.setText(actor.getmName());
                 int pos = position+1;
                 ((HolderView) holder).nomor.setText("#"+pos);

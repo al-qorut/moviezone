@@ -1,10 +1,11 @@
 package smk.adzikro.moviezone.adapter;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
-import smk.adzikro.moviezone.fragments.FragmentBlank;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+
 import smk.adzikro.moviezone.fragments.FragmentPeopleCrew;
 import smk.adzikro.moviezone.fragments.FragmentPeopleInfo;
 import smk.adzikro.moviezone.fragments.FragmentPeopleMovie;
@@ -21,13 +22,24 @@ public class PagerDetailPeople extends FragmentStatePagerAdapter {
     int TabCount;
     Actor actor;
 
-    public PagerDetailPeople(FragmentManager fm, CharSequence mTitle[], int TabCount,Actor actor) {
+    public PagerDetailPeople(FragmentManager fm, CharSequence mTitle[], int TabCount, Actor actor) {
         super(fm);
         this.title=mTitle;
         this.actor= actor;
         this.TabCount = TabCount;
     }
 
+
+    @Override
+    public CharSequence getPageTitle(int p){
+        return title[p];
+    }
+    @Override
+    public int getCount() {
+        return TabCount;
+    }
+
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         if(position==0)
@@ -39,13 +51,5 @@ public class PagerDetailPeople extends FragmentStatePagerAdapter {
         else if (position==3)
             return FragmentPeopleOnTv.newInstance(actor);
         return null;
-    }
-    @Override
-    public CharSequence getPageTitle(int p){
-        return title[p];
-    }
-    @Override
-    public int getCount() {
-        return TabCount;
     }
 }

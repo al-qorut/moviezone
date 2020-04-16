@@ -7,25 +7,26 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import smk.adzikro.moviezone.net.SearchClient;
-
 
 /**
  * Created by server on 11/20/17.
  */
 
 public class CastMovie implements Parcelable {
+    public static final Creator<CastMovie> CREATOR = new Creator<CastMovie>() {
+        @Override
+        public CastMovie createFromParcel(Parcel source) {
+            return new CastMovie(source);
+        }
+
+        @Override
+        public CastMovie[] newArray(int size) {
+            return new CastMovie[size];
+        }
+    };
     String id, name, charackter, photo;
-
-    public Actor getActor() {
-        return actor;
-    }
-
-    public void setActor(Actor actor) {
-        this.actor = actor;
-    }
-
     Actor actor;
+
     public CastMovie(JSONObject object){
         try {
             setId(object.getString("id"));
@@ -37,6 +38,22 @@ public class CastMovie implements Parcelable {
             Log.e("CastMovie","Tah eror "+e.getMessage());
         }
     }
+
+    protected CastMovie(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.charackter = in.readString();
+        this.photo = in.readString();
+    }
+
+    public Actor getActor() {
+        return actor;
+    }
+
+    public void setActor(Actor actor) {
+        this.actor = actor;
+    }
+
     public String getId() {
         return id;
     }
@@ -81,23 +98,4 @@ public class CastMovie implements Parcelable {
         dest.writeString(this.charackter);
         dest.writeString(this.photo);
     }
-
-    protected CastMovie(Parcel in) {
-        this.id = in.readString();
-        this.name = in.readString();
-        this.charackter = in.readString();
-        this.photo = in.readString();
-    }
-
-    public static final Creator<CastMovie> CREATOR = new Creator<CastMovie>() {
-        @Override
-        public CastMovie createFromParcel(Parcel source) {
-            return new CastMovie(source);
-        }
-
-        @Override
-        public CastMovie[] newArray(int size) {
-            return new CastMovie[size];
-        }
-    };
 }

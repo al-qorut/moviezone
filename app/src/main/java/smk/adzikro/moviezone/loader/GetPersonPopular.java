@@ -1,8 +1,10 @@
 package smk.adzikro.moviezone.loader;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
+
 import android.util.Log;
+
+import androidx.loader.content.AsyncTaskLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,9 +20,9 @@ import smk.adzikro.moviezone.objek.Actor;
  */
 
 public class GetPersonPopular extends AsyncTaskLoader<ArrayList<Actor>> {
-    private ArrayList<Actor> mData;
-    public boolean hasResult = false;
     private static final String TAG ="GetPersonPopular";
+    public boolean hasResult = false;
+    private ArrayList<Actor> mData;
     private int page=1;
     private Context context;
 

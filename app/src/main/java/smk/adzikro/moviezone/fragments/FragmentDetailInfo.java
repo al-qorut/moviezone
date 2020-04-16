@@ -2,9 +2,10 @@ package smk.adzikro.moviezone.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +28,11 @@ import smk.adzikro.moviezone.objek.Movie;
 public class FragmentDetailInfo extends Fragment {
     private static final String TAG ="FragmentDetailInfo" ;
     private static final String KEY ="kuncina" ;
-    private Movie movie;
     ListTrailerMovieAdapter adapter;
+    TextView tx_rate, tx_review, tx_releaseDate, tx_directed, tx_budget, tx_revenue, tx_otherFrom;
+    private Movie movie;
+    private RecyclerView trailer, similar, otherFrom;
+
     public static FragmentDetailInfo newInstance(Movie movie){
         FragmentDetailInfo info = new FragmentDetailInfo();
         Bundle bundle = new Bundle();
@@ -50,25 +54,23 @@ public class FragmentDetailInfo extends Fragment {
         putValue();
         return view;
     }
-    TextView tx_rate, tx_review, tx_releaseDate, tx_directed, tx_budget, tx_revenue, tx_otherFrom;
-    private RecyclerView trailer, similar, otherFrom;
 
     private void init(View view){
-        tx_rate = (TextView)view.findViewById(R.id.tx_rating);
-        tx_review = (TextView)view.findViewById(R.id.tx_review);
-        tx_releaseDate= (TextView)view.findViewById(R.id.tx_release_date);
-        tx_directed = (TextView)view.findViewById(R.id.tx_directed);
-        tx_budget = (TextView)view.findViewById(R.id.tx_budget);
-        tx_revenue = (TextView)view.findViewById(R.id.tx_revenue);
-        tx_otherFrom = (TextView)view.findViewById(R.id.other_from);
-        trailer = (RecyclerView)view.findViewById(R.id.list_movie);
-        similar = (RecyclerView)view.findViewById(R.id.list_similar);
-        otherFrom = (RecyclerView)view.findViewById(R.id.list_other_from);
+        tx_rate = view.findViewById(R.id.tx_rating);
+        tx_review = view.findViewById(R.id.tx_review);
+        tx_releaseDate = view.findViewById(R.id.tx_release_date);
+        tx_directed = view.findViewById(R.id.tx_directed);
+        tx_budget = view.findViewById(R.id.tx_budget);
+        tx_revenue = view.findViewById(R.id.tx_revenue);
+        tx_otherFrom = view.findViewById(R.id.other_from);
+        trailer = view.findViewById(R.id.list_movie);
+        similar = view.findViewById(R.id.list_similar);
+        otherFrom = view.findViewById(R.id.list_other_from);
         trailer.setHasFixedSize(true);
         trailer.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
 
         similar.setHasFixedSize(true);
-        similar.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
+        similar.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false));
 
         otherFrom.setHasFixedSize(true);
         otherFrom.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));

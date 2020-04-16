@@ -12,10 +12,48 @@ import org.json.JSONObject;
  */
 
 public class Episode implements Parcelable{
+    public static final Parcelable.Creator<Episode> CREATOR = new Parcelable.Creator<Episode>() {
+        @Override
+        public Episode createFromParcel(Parcel source) {
+            return new Episode(source);
+        }
+
+        @Override
+        public Episode[] newArray(int size) {
+            return new Episode[size];
+        }
+    };
     private String id;
     private String airdate;
     private String number;
     private String name;
+    private String overview;
+    private String vote = "0.0";
+    private String poster;
+
+    public Episode(JSONObject object) {
+        try {
+            setId(object.getString("id"));
+            setAirdate(object.getString("air_date"));
+            setName(object.getString("name"));
+            setNumber(object.getString("episode_number"));
+            setOverview(object.getString("overview"));
+            setPoster(object.getString("still_path"));
+            setVote(object.getString("vote_average"));
+        } catch (JSONException e) {
+            Log.e("Episode", "eroor " + e.getMessage());
+        }
+    }
+
+    protected Episode(Parcel in) {
+        this.id = in.readString();
+        this.airdate = in.readString();
+        this.number = in.readString();
+        this.name = in.readString();
+        this.overview = in.readString();
+        this.vote = in.readString();
+        this.poster = in.readString();
+    }
 
     public String getId() {
         return id;
@@ -73,10 +111,6 @@ public class Episode implements Parcelable{
         this.poster = poster;
     }
 
-    private String overview;
-    private String vote="0.0";
-    private String poster;
-
     @Override
     public int describeContents() {
         return 0;
@@ -92,40 +126,4 @@ public class Episode implements Parcelable{
         dest.writeString(this.vote);
         dest.writeString(this.poster);
     }
-
-    public Episode(JSONObject object) {
-        try{
-            setId(object.getString("id"));
-            setAirdate(object.getString("air_date"));
-            setName(object.getString("name"));
-            setNumber(object.getString("episode_number"));
-            setOverview(object.getString("overview"));
-            setPoster(object.getString("still_path"));
-            setVote(object.getString("vote_average"));
-        }catch (JSONException e){
-            Log.e("Episode", "eroor "+e.getMessage());
-        }
-    }
-
-    protected Episode(Parcel in) {
-        this.id = in.readString();
-        this.airdate = in.readString();
-        this.number = in.readString();
-        this.name = in.readString();
-        this.overview = in.readString();
-        this.vote = in.readString();
-        this.poster = in.readString();
-    }
-
-    public static final Parcelable.Creator<Episode> CREATOR = new Parcelable.Creator<Episode>() {
-        @Override
-        public Episode createFromParcel(Parcel source) {
-            return new Episode(source);
-        }
-
-        @Override
-        public Episode[] newArray(int size) {
-            return new Episode[size];
-        }
-    };
 }

@@ -12,18 +12,19 @@ import org.json.JSONObject;
 public class OtherFromDirector {
     String id, title, poster, releaseDate;
 
-    public OtherFromDirector(JSONObject object){
-        try{
-            if(object.getString("job").equals("Director")) {
+    public OtherFromDirector(JSONObject object) {
+        try {
+            if (object.getString("job").equals("Director")) {
                 setId(object.getString("id"));
                 setPoster(object.getString("poster_path"));
                 setTitle(object.getString("title"));
                 setReleaseDate(object.getString("release_date"));
             }
-        }catch (JSONException e){
-            Log.e("Dir",e.getMessage());
+        } catch (JSONException e) {
+            Log.e("Dir", e.getMessage());
         }
     }
+
     public String getId() {
         return id;
     }

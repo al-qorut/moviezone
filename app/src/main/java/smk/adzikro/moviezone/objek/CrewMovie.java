@@ -15,9 +15,19 @@ import smk.adzikro.moviezone.net.SearchClient;
  */
 
  public class CrewMovie implements Parcelable {
+    public static final Parcelable.Creator<CrewMovie> CREATOR = new Creator<CrewMovie>() {
+        @Override
+        public CrewMovie createFromParcel(Parcel source) {
+            return new CrewMovie(source);
+        }
+
+        @Override
+        public CrewMovie[] newArray(int size) {
+            return new CrewMovie[size];
+        }
+    };
     private static final String TAG ="CrewMovie" ;
     String id, name, department, job, photo;
-
         public CrewMovie(JSONObject object){
             try{
                 setId(object.getString("id"));
@@ -28,6 +38,15 @@ import smk.adzikro.moviezone.net.SearchClient;
                 Log.e(TAG,e.getMessage());
             }
         }
+
+    protected CrewMovie(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.department = in.readString();
+        this.job = in.readString();
+        this.photo = in.readString();
+    }
+
         public String getId() {
             return id;
         }
@@ -81,25 +100,5 @@ import smk.adzikro.moviezone.net.SearchClient;
             dest.writeString(this.job);
             dest.writeString(this.photo);
         }
-
-        protected CrewMovie(Parcel in) {
-            this.id = in.readString();
-            this.name = in.readString();
-            this.department = in.readString();
-            this.job = in.readString();
-            this.photo = in.readString();
-        }
-
-        public static final Parcelable.Creator<CrewMovie> CREATOR = new Creator<CrewMovie>() {
-            @Override
-            public CrewMovie createFromParcel(Parcel source) {
-                return new CrewMovie(source);
-            }
-
-            @Override
-            public CrewMovie[] newArray(int size) {
-                return new CrewMovie[size];
-            }
-        };
     }
 

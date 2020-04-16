@@ -5,16 +5,13 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 
@@ -84,8 +81,8 @@ public class ListTrailerMovieAdapter
         TextView txTitle;
         public Holder(View itemView) {
             super(itemView);
-            videoView = (ImageView) itemView.findViewById(R.id.video);
-            txTitle = (TextView)itemView.findViewById(R.id.title_video);
+            videoView = itemView.findViewById(R.id.video);
+            txTitle = itemView.findViewById(R.id.title_video);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

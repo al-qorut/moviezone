@@ -103,7 +103,7 @@ public class StackRemoteFactory implements
                        // Movie movie = new Movie(getmovie);
                        // mData.add(movie);
                       //  Log.e(TAG,"Tah "+movie.getTitle());
-                        mBit.add(i, getGb("http://image.tmdb.org/t/p/w300" +getmovie.getString("poster_path")));
+                     //   mBit.add(i, getGb("http://image.tmdb.org/t/p/w300" +getmovie.getString("poster_path")));
                         title.add(i, getmovie.getString("title"));
                         tgl.add(i, getmovie.getString("release_date"));
                         id.add(i, getmovie.getInt("id"));
@@ -122,7 +122,7 @@ public class StackRemoteFactory implements
 
             }
         });
-    }
+    }/*
     private Bitmap getGb(String url){
         Bitmap gb = null;
         try {
@@ -135,7 +135,7 @@ public class StackRemoteFactory implements
             Log.e(TAG,"Widget load error");
         }
         return gb;
-    }
+    } */
     @Override
     public void onDestroy() {
 

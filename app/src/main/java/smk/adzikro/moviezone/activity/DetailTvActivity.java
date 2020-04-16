@@ -1,19 +1,19 @@
 package smk.adzikro.moviezone.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,22 +24,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
-
-import java.util.ArrayList;
+import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.adapter.ViewBoongan;
-import smk.adzikro.moviezone.adapter.ViewImagePagerAdapter;
 import smk.adzikro.moviezone.custom.CirclePageIndicator;
 import smk.adzikro.moviezone.custom.SlidingTabLayout;
 import smk.adzikro.moviezone.fragments.FragmentActors;
-import smk.adzikro.moviezone.fragments.FragmentBlank;
 import smk.adzikro.moviezone.fragments.FragmentDetailTvInfo;
 import smk.adzikro.moviezone.fragments.FragmentSeason;
 import smk.adzikro.moviezone.loader.GetDetailTvTaskLoader;
@@ -56,7 +54,6 @@ import smk.adzikro.moviezone.widget.TopImageView;
 public class DetailTvActivity extends AppCompatActivity
     implements
         LoaderManager.LoaderCallbacks<Tv>{
-    private Tv tv;
     public final static String DETAIL_TV="detailtv";
     CharSequence TitleTab[];
     ProgressBar loading;
@@ -68,6 +65,7 @@ public class DetailTvActivity extends AppCompatActivity
     CollapsingToolbarLayout collapsingToolbarLayout;
     LinearLayout mTitleContainer;
     SlidingTabLayout slidingTabLayout;
+    private Tv tv;
 
     @Override
     protected void onCreate(Bundle save){
@@ -101,20 +99,20 @@ public class DetailTvActivity extends AppCompatActivity
         setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        photo = (ImageView)findViewById(R.id.photo); //photo kotak leutik
-        gbroll = (TopImageView)findViewById(R.id.slidingImage); //background
-        txInfo = (TextView)findViewById(R.id.info);
-        txType = (TextView)findViewById(R.id.type);
-        title = (TextView)findViewById(R.id.titleBold);
-        pager = (ViewPager)findViewById(R.id.imageshow);
-        circlePageIndicator = (CirclePageIndicator)findViewById(R.id.imageindicator);
-        collapsingToolbarLayout =(CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        photo = findViewById(R.id.photo); //photo kotak leutik
+        gbroll = findViewById(R.id.slidingImage); //background
+        txInfo = findViewById(R.id.info);
+        txType = findViewById(R.id.type);
+        title = findViewById(R.id.titleBold);
+        pager = findViewById(R.id.imageshow);
+        circlePageIndicator = findViewById(R.id.imageindicator);
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle(tv.getTitle());
         collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent));
-        mTitleContainer = (LinearLayout) findViewById(R.id.infoMovie);
-        pagerBawah = (ViewPager)findViewById(R.id.pager);
-        slidingTabLayout = (SlidingTabLayout)findViewById(R.id.tabs);
-        loading = (ProgressBar)findViewById(R.id.progress);
+        mTitleContainer = findViewById(R.id.infoMovie);
+        pagerBawah = findViewById(R.id.pager);
+        slidingTabLayout = findViewById(R.id.tabs);
+        loading = findViewById(R.id.progress);
 
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -140,7 +138,7 @@ public class DetailTvActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(DetailTvActivity.this, SlideImageActivity.class);
-                intent.putStringArrayListExtra(SlideImageActivity.KEY, (ArrayList<String>) tv.getListposter());
+                intent.putStringArrayListExtra(SlideImageActivity.KEY, tv.getListposter());
                 startActivity(intent);
             }
         });
@@ -148,28 +146,32 @@ public class DetailTvActivity extends AppCompatActivity
     private void loadImage(final ImageView imageView, final ProgressBar progressBar, int posisi){
         Glide.with(this).load(SearchClient.getImagePathBesar(this)+tv.getImagesBack().get(posisi))
                 .thumbnail(0.5f)
-                .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .listener(new RequestListener<String, GlideDrawable>() {
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         progressBar.setVisibility(View.GONE);
                         imageView.setVisibility(View.VISIBLE);
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         imageView.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                         return false;
                     }
                 })
-                .into(new SimpleTarget<GlideDrawable>() {
+                .into(new CustomTarget<Drawable>() {
                     @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         imageView.setImageDrawable(resource);
                         imageView.setDrawingCacheEnabled(true);
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
                     }
                 });
     }

@@ -2,9 +2,9 @@ package smk.adzikro.moviezone.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,15 +39,15 @@ public class FragmentSeason extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle){
         View view = LayoutInflater.from(getContext()).inflate(R.layout.season_layout,group,false);
         season = getArguments().getParcelable(KEY);
-        TextView tx_season = (TextView)view.findViewById(R.id.season);
+        TextView tx_season = view.findViewById(R.id.season);
         tx_season.setText(getText(R.string.season)+" "+season.getNumber());
-        TextView tx_episode = (TextView)view.findViewById(R.id.episode);
+        TextView tx_episode = view.findViewById(R.id.episode);
         tx_episode.setText(getText(R.string.episode)+" "+season.getJmlEpisode());
-        ImageView imageView = (ImageView)view.findViewById(R.id.imageheader);
+        ImageView imageView = view.findViewById(R.id.imageheader);
         Glide.with(getContext()).load(SearchClient.getImagePath(getContext())+season.getPoster())
                 .thumbnail(0.6f)
                 .into(imageView);
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.list_episode);
+        RecyclerView recyclerView = view.findViewById(R.id.list_episode);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ListEpisode listEpisode = new ListEpisode(getContext(), season.getEpisodes());
@@ -92,11 +92,11 @@ public class FragmentSeason extends Fragment {
             ImageView poster;
             public Holder(View itemView) {
                 super(itemView);
-                no = (TextView)itemView.findViewById(R.id.number_episode);
-                tgl = (TextView)itemView.findViewById(R.id.tanggal);
-                judul= (TextView)itemView.findViewById(R.id.title_episode);
-                review = (TextView)itemView.findViewById(R.id.review);
-                poster = (ImageView)itemView.findViewById(R.id.imagepisode);
+                no = itemView.findViewById(R.id.number_episode);
+                tgl = itemView.findViewById(R.id.tanggal);
+                judul = itemView.findViewById(R.id.title_episode);
+                review = itemView.findViewById(R.id.review);
+                poster = itemView.findViewById(R.id.imagepisode);
             }
         }
     }

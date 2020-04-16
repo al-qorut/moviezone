@@ -121,4 +121,6 @@
         <item>vote_average.desc</item>
         <item>release_date.desc</item>
     </string-array>
+    <string name="about">"Movie Zone \nVer %s \nSMK Adz-Dzikro Bandung"</string>
+    <string name="action_about">About</string>
 </resources>

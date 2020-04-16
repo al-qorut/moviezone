@@ -1,64 +1,64 @@
-<android.support.v4.widget.NestedScrollView android:id="@+id/coordinator"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
          <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginTop="4dp"
             card_view:cardCornerRadius="4dp">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="50dp">
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/season"
+                        style="@style/Base.TextAppearance.AppCompat.Large"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
                         android:gravity="center_vertical"
-                        style="@style/Base.TextAppearance.AppCompat.Large"
-                        android:id="@+id/season"
                         tools:text="Season 4"/>
                     <TextView
+                        android:id="@+id/episode"
                         android:layout_width="wrap_content"
-                        android:layout_marginLeft="@dimen/spacing_large"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/spacing_large"
                         android:gravity="center_vertical"
-                        android:id="@+id/episode"
                         tools:text="10 Episode"/>
                 </LinearLayout>
             <ImageView
+                android:id="@+id/imageheader"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@drawable/cover"
                 android:scaleType="centerCrop"
-                android:id="@+id/imageheader"/>
+                android:src="@drawable/cover" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_episode"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/list_episode"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
         </FrameLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

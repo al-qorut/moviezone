@@ -1,28 +1,16 @@
 package smk.adzikro.moviezone.adapter;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import smk.adzikro.moviezone.R;
-import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.IconPagerAdapter;
 
 /**
@@ -55,12 +43,12 @@ public class ViewBoongan extends FragmentPagerAdapter implements
 
     public static class FragmentImage extends Fragment {
         private static final String KEY = "FragmentImage:Content" ;
+        private String mContent = "????";
 
         public static ViewImagePagerAdapter.FragmentImage newInstance(String s){
             ViewImagePagerAdapter.FragmentImage fragmentImage = new ViewImagePagerAdapter.FragmentImage();
             return fragmentImage;
         }
-        private String mContent="????";
 
         @Override
         public void onCreate(Bundle s){

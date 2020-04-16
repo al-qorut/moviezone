@@ -6,34 +6,30 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import smk.adzikro.moviezone.net.SearchClient;
-
 /**
  * Created by server on 11/18/17.
  */
 
 public class Casting implements Parcelable {
+    public static final Creator<Casting> CREATOR = new Creator<Casting>() {
+        @Override
+        public Casting createFromParcel(Parcel source) {
+            return new Casting(source);
+        }
+
+        @Override
+        public Casting[] newArray(int size) {
+            return new Casting[size];
+        }
+    };
     String id;
     String character;
     String title;
     String name;
-
-    public Actor getActor() {
-        return actor;
-    }
-
-    public void setActor(Actor actor) {
-        this.actor = actor;
-    }
-
     Actor actor;
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    String releasedate;
+    String poster;
+    String adult;
 
     public Casting(JSONObject object){
         try{
@@ -47,6 +43,37 @@ public class Casting implements Parcelable {
             e.getStackTrace();
         }
     }
+
+    public Casting() {
+    }
+
+    protected Casting(Parcel in) {
+        this.id = in.readString();
+        this.character = in.readString();
+        this.title = in.readString();
+        this.name = in.readString();
+        this.actor = in.readParcelable(Actor.class.getClassLoader());
+        this.releasedate = in.readString();
+        this.poster = in.readString();
+        this.adult = in.readString();
+    }
+
+    public Actor getActor() {
+        return actor;
+    }
+
+    public void setActor(Actor actor) {
+        this.actor = actor;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }
@@ -95,13 +122,6 @@ public class Casting implements Parcelable {
         this.adult = adult;
     }
 
-    String releasedate;
-    String poster;
-    String adult;
-
-    public Casting() {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -118,27 +138,4 @@ public class Casting implements Parcelable {
         dest.writeString(this.poster);
         dest.writeString(this.adult);
     }
-
-    protected Casting(Parcel in) {
-        this.id = in.readString();
-        this.character = in.readString();
-        this.title = in.readString();
-        this.name = in.readString();
-        this.actor = in.readParcelable(Actor.class.getClassLoader());
-        this.releasedate = in.readString();
-        this.poster = in.readString();
-        this.adult = in.readString();
-    }
-
-    public static final Creator<Casting> CREATOR = new Creator<Casting>() {
-        @Override
-        public Casting createFromParcel(Parcel source) {
-            return new Casting(source);
-        }
-
-        @Override
-        public Casting[] newArray(int size) {
-            return new Casting[size];
-        }
-    };
 }

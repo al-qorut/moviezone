@@ -1,16 +1,17 @@
 package smk.adzikro.moviezone.fragments;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,31 +19,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.activity.DetailTvActivity;
 import smk.adzikro.moviezone.custom.GridAutofitLayoutManager;
-import smk.adzikro.moviezone.loader.GetMovieTaskLoader;
 import smk.adzikro.moviezone.loader.GetTvTaskLoader;
 import smk.adzikro.moviezone.net.SearchClient;
-import smk.adzikro.moviezone.objek.Movie;
-import smk.adzikro.moviezone.objek.OnItemClickListener;
 import smk.adzikro.moviezone.objek.OnItemTvClickListener;
 import smk.adzikro.moviezone.objek.OnLoadMoreListener;
 import smk.adzikro.moviezone.objek.Tv;
@@ -57,11 +49,11 @@ public class FragmentListTv extends Fragment implements
         OnItemTvClickListener {
 
     public static final String TAG = "FragmentListTv" ;
+    int page = 1, aksi, tampil = 0;
     private TvListAdapter adapter;
     private RecyclerView listMovie;
     private ProgressBar loading;
     private ArrayList<Tv> mData =new ArrayList<>();
-    int page=1, aksi, tampil=0;
     private boolean loadingPertama=true;
 
     public static FragmentListTv newInstance(int aksi, String query){
@@ -213,7 +205,7 @@ public class FragmentListTv extends Fragment implements
 
         public ListLoadingHolder(View view) {
             super(view);
-            progressBar =(ProgressBar)view.findViewById(R.id.loadmore);
+            progressBar = view.findViewById(R.id.loadmore);
         }
     }
     public class GridDataHolder extends RecyclerView.ViewHolder{
@@ -221,15 +213,15 @@ public class FragmentListTv extends Fragment implements
         TextView textView;
         public GridDataHolder(View view) {
             super(view);
-            imageView = (ImageView) view.findViewById(R.id.image);
-            textView = (TextView) view.findViewById(R.id.title);
+            imageView = view.findViewById(R.id.image);
+            textView = view.findViewById(R.id.title);
         }
     }
     class TvListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             implements View.OnClickListener{
         public static final int VIEW_TYPE_ITEM = 0;
-        private final int VIEW_TYPE_LOADING =1;
         public static final int VIEW_TYPE_GRID = 2;
+        private final int VIEW_TYPE_LOADING = 1;
         private OnLoadMoreListener onLoadMoreListener;
         private OnItemTvClickListener onItemClickListener;
         private boolean isLoading;
@@ -303,15 +295,20 @@ public class FragmentListTv extends Fragment implements
             if(holder instanceof ListDataHolder) {
                 Glide.with(getContext()).load(SearchClient.getImagePath(getContext())+p.getPoster())
                         .thumbnail(0.5f)
-                        .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(new SimpleTarget<GlideDrawable>() {
+                        .into(new CustomTarget<Drawable>() {
                             @Override
-                            public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                                ((ListDataHolder)holder).imgPhoto.setImageDrawable(glideDrawable);
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                ((ListDataHolder)holder).imgPhoto.setImageDrawable(resource);
                                 ((ListDataHolder)holder).imgPhoto.setDrawingCacheEnabled(true);
                             }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                            }
                         });
+
                 ((ListDataHolder)holder).itemView.setTag(p);
                 ((ListDataHolder)holder).txTitle.setText(p.getTitle());
                 ((ListDataHolder)holder).txReleaseDate.setText(p.getReleaseDate());
@@ -322,15 +319,20 @@ public class FragmentListTv extends Fragment implements
                 ((GridDataHolder) holder).textView.setText(p.getTitle());
                 Glide.with(getContext()).load(SearchClient.getImagePath(getContext()) + p.getPoster())
                         .thumbnail(0.5f)
-                        .crossFade()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(new SimpleTarget<GlideDrawable>() {
+                        .into(new CustomTarget<Drawable>() {
                             @Override
-                            public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                                ((GridDataHolder) holder).imageView.setImageDrawable(glideDrawable);
+                            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                                ((GridDataHolder) holder).imageView.setImageDrawable(resource);
                                 ((GridDataHolder) holder).imageView.setDrawingCacheEnabled(true);
                             }
+
+                            @Override
+                            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                            }
                         });
+
             }else if(holder instanceof ListLoadingHolder){
                 ((ListLoadingHolder)holder).progressBar.setIndeterminate(true);
             }

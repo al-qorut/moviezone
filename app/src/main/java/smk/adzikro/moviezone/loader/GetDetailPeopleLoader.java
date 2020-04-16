@@ -1,10 +1,7 @@
 package smk.adzikro.moviezone.loader;
 
-import android.app.LoaderManager;
 import android.content.Context;
-import android.content.Loader;
-import android.os.Bundle;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -16,7 +13,6 @@ import java.util.List;
 
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Actor;
-import smk.adzikro.moviezone.objek.Movie;
 import smk.adzikro.moviezone.objek.Tv;
 
 /**
@@ -26,9 +22,9 @@ import smk.adzikro.moviezone.objek.Tv;
 public class GetDetailPeopleLoader extends AsyncTaskLoader<Actor> {
 
     private static final String TAG ="getDetailPeopleLoader" ;
+    Context context;
     private Actor actor;
     private boolean hasResult=false;
-    Context context;
 
     public GetDetailPeopleLoader(Context context, Actor actor) {
         super(context);

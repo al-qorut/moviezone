@@ -11,8 +11,18 @@ import org.json.JSONObject;
  */
 
 public class Review implements Parcelable {
-    private String id, author, content, url;
+    public static final Parcelable.Creator<Review> CREATOR = new Parcelable.Creator<Review>() {
+        @Override
+        public Review createFromParcel(Parcel source) {
+            return new Review(source);
+        }
 
+        @Override
+        public Review[] newArray(int size) {
+            return new Review[size];
+        }
+    };
+    private String id, author, content, url;
     public Review(JSONObject object){
         try{
             setId(object.getString("id"));
@@ -23,6 +33,17 @@ public class Review implements Parcelable {
             e.getStackTrace();
         }
     }
+
+    public Review() {
+    }
+
+    protected Review(Parcel in) {
+        this.id = in.readString();
+        this.author = in.readString();
+        this.content = in.readString();
+        this.url = in.readString();
+    }
+
     public String getId() {
         return id;
     }
@@ -67,26 +88,4 @@ public class Review implements Parcelable {
         dest.writeString(this.content);
         dest.writeString(this.url);
     }
-
-    public Review() {
-    }
-
-    protected Review(Parcel in) {
-        this.id = in.readString();
-        this.author = in.readString();
-        this.content = in.readString();
-        this.url = in.readString();
-    }
-
-    public static final Parcelable.Creator<Review> CREATOR = new Parcelable.Creator<Review>() {
-        @Override
-        public Review createFromParcel(Parcel source) {
-            return new Review(source);
-        }
-
-        @Override
-        public Review[] newArray(int size) {
-            return new Review[size];
-        }
-    };
 }

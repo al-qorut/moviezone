@@ -2,10 +2,12 @@ package smk.adzikro.moviezone.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.widget.Toolbar;
+
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import smk.adzikro.moviezone.R;
@@ -101,8 +103,8 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
             child.setY(mStartYPosition - distanceYToSubtract);
 
             CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            lp.width = (int) (mStartHeight);
-            lp.height = (int) (mStartHeight);
+            lp.width = mStartHeight;
+            lp.height = mStartHeight;
             child.setLayoutParams(lp);
         }
         return true;

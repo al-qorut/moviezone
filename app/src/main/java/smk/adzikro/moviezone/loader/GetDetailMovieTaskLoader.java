@@ -1,34 +1,22 @@
 package smk.adzikro.moviezone.loader;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
 import android.util.Log;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.ResponseHandlerInterface;
-import com.loopj.android.http.SyncHttpClient;
-import com.squareup.okhttp.OkHttpClient;
+
+import androidx.loader.content.AsyncTaskLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpResponse;
 import smk.adzikro.moviezone.net.SearchClient;
-import smk.adzikro.moviezone.objek.Actor;
 import smk.adzikro.moviezone.objek.Movie;
 import smk.adzikro.moviezone.objek.OtherFromDirector;
 import smk.adzikro.moviezone.objek.Review;
-import smk.adzikro.moviezone.objek.SimilarMovie;
-import smk.adzikro.moviezone.objek.Trailer;
 
 /**
  * Created by server on 11/16/17.
@@ -36,9 +24,9 @@ import smk.adzikro.moviezone.objek.Trailer;
 
 public class GetDetailMovieTaskLoader extends AsyncTaskLoader<Movie> {
     private static final String TAG ="GetdetailMovieLoader" ;
-    private Movie movie;
     public boolean hasResult = false;
     Context context;
+    private Movie movie;
 
     public GetDetailMovieTaskLoader(Context context, Movie movie) {
         super(context);

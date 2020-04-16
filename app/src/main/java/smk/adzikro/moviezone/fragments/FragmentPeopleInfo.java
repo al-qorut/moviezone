@@ -3,16 +3,17 @@ package smk.adzikro.moviezone.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
@@ -21,7 +22,6 @@ import java.util.List;
 
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.activity.SlideImageActivity;
-import smk.adzikro.moviezone.adapter.ListSimilarMovies;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Actor;
 
@@ -32,6 +32,10 @@ import smk.adzikro.moviezone.objek.Actor;
 public class FragmentPeopleInfo extends Fragment {
 
     private static final String KEY_ACTOR ="key_actor" ;
+    static String TAG = "FragmentPoepleInfo";
+    Actor actor;
+    TextView lahir, tmplahir, biography;
+    RecyclerView recyclerView;
 
     public static FragmentPeopleInfo newInstance(Actor actor) {
         Log.e(TAG,"onCreate");
@@ -41,8 +45,7 @@ public class FragmentPeopleInfo extends Fragment {
         fragmentPeopleInfo.setArguments(bundle);
         return fragmentPeopleInfo;
     }
-    static String TAG="FragmentPoepleInfo";
-    Actor actor;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle){
         super.onCreateView(inflater,group,bundle);
@@ -53,13 +56,12 @@ public class FragmentPeopleInfo extends Fragment {
         init(view);
         return view;
     }
-    TextView lahir, tmplahir, biography;
-    RecyclerView recyclerView;
+
     private void init(View view){
-        biography = (TextView)view.findViewById(R.id.tx_biografi);
-        lahir = (TextView)view.findViewById(R.id.tx_born);
-        tmplahir = (TextView)view.findViewById(R.id.tx_birthplace);
-        recyclerView = (RecyclerView)view.findViewById(R.id.list_photo);
+        biography = view.findViewById(R.id.tx_biografi);
+        lahir = view.findViewById(R.id.tx_born);
+        tmplahir = view.findViewById(R.id.tx_birthplace);
+        recyclerView = view.findViewById(R.id.list_photo);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         biography.setText(actor.getBiography());
@@ -70,8 +72,8 @@ public class FragmentPeopleInfo extends Fragment {
     }
 
     private class ImageList extends RecyclerView.Adapter<ImageList.Holder> {
-        private List<String> img = new ArrayList<>();
         Context context;
+        private List<String> img = new ArrayList<>();
         public ImageList(Context context, List<String> images){
             this.context = context;
             this.img = images;
@@ -110,7 +112,7 @@ public class FragmentPeopleInfo extends Fragment {
             ImageView photo;
             public Holder(View itemView) {
                 super(itemView);
-                photo = (ImageView)itemView.findViewById(R.id.photo);
+                photo = itemView.findViewById(R.id.photo);
 
             }
         }

@@ -1,9 +1,11 @@
 package smk.adzikro.moviezone.loader;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 import android.util.Log;
+
 import org.json.JSONObject;
+
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Tv;
 
@@ -13,9 +15,9 @@ import smk.adzikro.moviezone.objek.Tv;
 
 public class GetDetailTvTaskLoader extends AsyncTaskLoader<Tv> {
     private static final String TAG ="GetdetailTvLoader" ;
-    private Tv tv;
     public boolean hasResult = false;
     Context context;
+    private Tv tv;
 
     public GetDetailTvTaskLoader(Context context, Tv tvx) {
         super(context);

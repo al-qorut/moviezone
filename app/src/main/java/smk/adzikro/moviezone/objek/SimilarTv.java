@@ -8,23 +8,24 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import smk.adzikro.moviezone.net.SearchClient;
-
 /**
  * Created by server on 11/20/17.
  */
 
 public class SimilarTv implements Parcelable {
+    public static final Parcelable.Creator<SimilarTv> CREATOR = new Parcelable.Creator<SimilarTv>() {
+        @Override
+        public SimilarTv createFromParcel(Parcel source) {
+            return new SimilarTv(source);
+        }
+
+        @Override
+        public SimilarTv[] newArray(int size) {
+            return new SimilarTv[size];
+        }
+    };
     String id, title, genres, rating="0,0", releaseDate, backdrop, poster, plot;
     Tv tv;
-
-    public Tv getTv() {
-        return tv;
-    }
-
-    public void setTv(Tv tv) {
-        this.tv = tv;
-    }
 
     public SimilarTv(JSONObject object){
         try{
@@ -48,6 +49,25 @@ public class SimilarTv implements Parcelable {
             setTv(new Tv(object));
         }catch (JSONException e){
             Log.e("SimilarTV", "Errot parsing data tv "+e.getMessage());}
+    }
+
+    protected SimilarTv(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.genres = in.readString();
+        this.rating = in.readString();
+        this.releaseDate = in.readString();
+        this.backdrop = in.readString();
+        this.poster = in.readString();
+        this.plot = in.readString();
+    }
+
+    public Tv getTv() {
+        return tv;
+    }
+
+    public void setTv(Tv tv) {
+        this.tv = tv;
     }
 
     public String getId() {
@@ -130,27 +150,4 @@ public class SimilarTv implements Parcelable {
         dest.writeString(this.poster);
         dest.writeString(this.plot);
     }
-
-    protected SimilarTv(Parcel in) {
-        this.id = in.readString();
-        this.title = in.readString();
-        this.genres = in.readString();
-        this.rating = in.readString();
-        this.releaseDate = in.readString();
-        this.backdrop = in.readString();
-        this.poster = in.readString();
-        this.plot = in.readString();
-    }
-
-    public static final Parcelable.Creator<SimilarTv> CREATOR = new Parcelable.Creator<SimilarTv>() {
-        @Override
-        public SimilarTv createFromParcel(Parcel source) {
-            return new SimilarTv(source);
-        }
-
-        @Override
-        public SimilarTv[] newArray(int size) {
-            return new SimilarTv[size];
-        }
-    };
 }

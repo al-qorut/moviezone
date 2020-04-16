@@ -11,18 +11,32 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import smk.adzikro.moviezone.net.SearchClient;
-
 
 /**
  * Created by server on 11/15/17.
  */
 
 public class Tv implements Parcelable {
-    String id,title, genres, rating="0,0", releaseDate, backdrop, poster, plot;
+    public static final Creator<Tv> CREATOR = new Creator<Tv>() {
+        @Override
+        public Tv createFromParcel(Parcel source) {
+            return new Tv(source);
+        }
+
+        @Override
+        public Tv[] newArray(int size) {
+            return new Tv[size];
+        }
+    };
     final String TAG="Tv";
-
-
+    String id, title, genres, rating = "0,0", releaseDate, backdrop, poster, plot;
+    String network, status, type, lastDate, createBy, lastseason, overview;
+    List<SimilarTv> similarTvList = new ArrayList<>();
+    List<TrailerTv> trailerTvs = new ArrayList<>();
+    ArrayList<CastMovie> castTvList = new ArrayList<>();
+    ArrayList<String> imagesBack = new ArrayList<>();
+    ArrayList<String> listposter = new ArrayList<>();
+    Season season;
 
     public Tv(JSONObject object){
 
@@ -48,13 +62,32 @@ public class Tv implements Parcelable {
         }catch (JSONException e){
             Log.e(TAG, "Errot parsing data tv "+e.getMessage());}
     }
-    String network, status, type, lastDate, createBy, lastseason, overview ;
-    List<SimilarTv> similarTvList= new ArrayList<>();
-    List<TrailerTv> trailerTvs = new ArrayList<>();
-    ArrayList<CastMovie> castTvList = new ArrayList<>();
-    ArrayList<String> imagesBack = new ArrayList<>();
-    ArrayList<String> listposter = new ArrayList<>();
-    Season season;
+
+    public Tv(boolean bo) {
+    }
+
+    protected Tv(Parcel in) {
+        this.id = in.readString();
+        this.title = in.readString();
+        this.genres = in.readString();
+        this.rating = in.readString();
+        this.releaseDate = in.readString();
+        this.backdrop = in.readString();
+        this.poster = in.readString();
+        this.plot = in.readString();
+        this.network = in.readString();
+        this.status = in.readString();
+        this.type = in.readString();
+        this.lastDate = in.readString();
+        this.createBy = in.readString();
+        this.lastseason = in.readString();
+        this.overview = in.readString();
+        this.similarTvList = in.createTypedArrayList(SimilarTv.CREATOR);
+        this.trailerTvs = in.createTypedArrayList(TrailerTv.CREATOR);
+        this.castTvList = in.createTypedArrayList(CastMovie.CREATOR);
+        this.imagesBack = in.createStringArrayList();
+        this.listposter = in.createStringArrayList();
+    }
 
     public Season getSeason() {
         return season;
@@ -79,7 +112,7 @@ public class Tv implements Parcelable {
                     g = g + n+", ";
             }
             setNetwork(g);
-            
+
             setStatus(object.getString("status"));
             setType(object.getString("type"));
             setLastDate(object.getString("last_air_date"));
@@ -154,6 +187,7 @@ public class Tv implements Parcelable {
             Log.e("Tv","tah Erot "+e.getMessage());
         }
     }
+
     public void addSeason(JSONObject object){
         Season s = new Season(object);
         setSeason(s);
@@ -166,6 +200,7 @@ public class Tv implements Parcelable {
     public void setListposter(ArrayList<String> listposter) {
         this.listposter = listposter;
     }
+
     public String getOverview() {
         return overview;
     }
@@ -173,7 +208,6 @@ public class Tv implements Parcelable {
     public void setOverview(String overview) {
         this.overview = overview;
     }
-
 
     public String getNetwork() {
         return network;
@@ -242,6 +276,7 @@ public class Tv implements Parcelable {
     public ArrayList<CastMovie> getCastTvList() {
         return castTvList;
     }
+    //  List<Season> seasons = new ArrayList<>();
 
     public void setCastTvList(ArrayList<CastMovie> castTvList) {
         this.castTvList = castTvList;
@@ -254,9 +289,6 @@ public class Tv implements Parcelable {
     public void setImagesBack(ArrayList<String> images) {
         this.imagesBack = images;
     }
-    //  List<Season> seasons = new ArrayList<>();
-
-
 
     public String getPlot() {
         return plot;
@@ -265,6 +297,7 @@ public class Tv implements Parcelable {
     public void setPlot(String plot) {
         this.plot = plot;
     }
+
     public String getId() {
         return id;
     }
@@ -321,9 +354,6 @@ public class Tv implements Parcelable {
         this.poster = poster;
     }
 
-    public Tv(boolean bo) {
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -353,39 +383,4 @@ public class Tv implements Parcelable {
         dest.writeStringList(this.imagesBack);
         dest.writeStringList(this.listposter);
     }
-
-    protected Tv(Parcel in) {
-        this.id = in.readString();
-        this.title = in.readString();
-        this.genres = in.readString();
-        this.rating = in.readString();
-        this.releaseDate = in.readString();
-        this.backdrop = in.readString();
-        this.poster = in.readString();
-        this.plot = in.readString();
-        this.network = in.readString();
-        this.status = in.readString();
-        this.type = in.readString();
-        this.lastDate = in.readString();
-        this.createBy = in.readString();
-        this.lastseason = in.readString();
-        this.overview = in.readString();
-        this.similarTvList = in.createTypedArrayList(SimilarTv.CREATOR);
-        this.trailerTvs = in.createTypedArrayList(TrailerTv.CREATOR);
-        this.castTvList = in.createTypedArrayList(CastMovie.CREATOR);
-        this.imagesBack = in.createStringArrayList();
-        this.listposter = in.createStringArrayList();
-    }
-
-    public static final Creator<Tv> CREATOR = new Creator<Tv>() {
-        @Override
-        public Tv createFromParcel(Parcel source) {
-            return new Tv(source);
-        }
-
-        @Override
-        public Tv[] newArray(int size) {
-            return new Tv[size];
-        }
-    };
 }

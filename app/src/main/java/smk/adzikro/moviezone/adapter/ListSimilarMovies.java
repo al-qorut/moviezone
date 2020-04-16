@@ -1,7 +1,7 @@
 package smk.adzikro.moviezone.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,8 +13,8 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import smk.adzikro.moviezone.activity.DetailMovieActivity;
 import smk.adzikro.moviezone.R;
+import smk.adzikro.moviezone.activity.DetailMovieActivity;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Movie;
 import smk.adzikro.moviezone.objek.SimilarMovie;
@@ -77,8 +77,8 @@ public class ListSimilarMovies
         TextView txTitle;
         public Holder(View itemView) {
             super(itemView);
-            videoView = (ImageView) itemView.findViewById(R.id.video);
-            txTitle = (TextView)itemView.findViewById(R.id.title_video);
+            videoView = itemView.findViewById(R.id.video);
+            txTitle = itemView.findViewById(R.id.title_video);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,171 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
         xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/left_margin"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
             <ImageView
                 android:layout_width="wrap_content"
-                android:src="@android:drawable/star_big_off"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/star_big_off" />
             <TextView
-                android:layout_width="wrap_content"
-                tools:text="8.0"
                 android:id="@+id/tx_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_height="wrap_content" />
+                tools:text="8.0" />
         </LinearLayout>
         <TextView
+            android:id="@+id/tx_review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tx_review"
             tools:text="naon we atuh"/>
         <TableLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="@dimen/left_margin"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/left_margin">
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp">
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
                     android:layout_marginRight="@dimen/activity_vertical_margin"
                     android:text="@string/firstairdate"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     tools:text="First Air Date"/>
                 <TextView
                     android:id="@+id/tx_first_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textSize="14sp"
-                    tools:text="September, 20 2019"
-                    android:layout_weight="1"/>
+                    tools:text="September, 20 2019" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp">
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
                     android:layout_marginRight="@dimen/activity_vertical_margin"
                     android:text="@string/lastairdate"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     tools:text="Last Air Date"/>
                 <TextView
                     android:id="@+id/tx_last_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textSize="14sp"
-                    tools:text="September, 20 2019"
-                    android:layout_weight="1"/>
+                    tools:text="September, 20 2019" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp">
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
                     android:layout_marginRight="@dimen/activity_vertical_margin"
                     android:text="@string/network"
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     tools:text="First Air Date"/>
                 <TextView
                     android:id="@+id/tx_networks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textSize="14sp"
-                    tools:text="rcti, sctv, tv-one"
-                    android:layout_weight="1"/>
+                    tools:text="rcti, sctv, tv-one" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp">
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
                     android:text="@string/tx_created_by"
-                    android:layout_marginRight="@dimen/activity_vertical_margin"/>
+                    android:textColor="@android:color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/tx_created"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textSize="14sp"
-                    tools:text="Dr. Simanalagy"
-                    android:layout_weight="1"/>
+                    tools:text="Dr. Simanalagy" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp">
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:text="@string/tx_type"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
-                    android:text="@string/tx_type"
-                    android:layout_marginRight="@dimen/activity_vertical_margin"/>
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/tx_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textSize="14sp"
-                    tools:text="$34,000,000"
-                    android:layout_weight="1"/>
+                    tools:text="$34,000,000" />
             </TableRow>
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp">
                 <TextView
+                    style="@style/Base.TextAppearance.AppCompat.Medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    style="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textStyle="bold"
+                    android:layout_marginRight="@dimen/activity_vertical_margin"
+                    android:text="@string/tx_status"
                     android:textColor="@android:color/black"
                     android:textSize="14sp"
-                    android:text="@string/tx_status"
-                    android:layout_marginRight="@dimen/activity_vertical_margin"/>
+                    android:textStyle="bold" />
                 <TextView
                     android:id="@+id/tx_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textSize="14sp"
-                    tools:text="$134,000,000"
-                    android:layout_weight="1"/>
+                    tools:text="$134,000,000" />
             </TableRow>
         </TableLayout>
         <include layout="@layout/list_horizontal"/>
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

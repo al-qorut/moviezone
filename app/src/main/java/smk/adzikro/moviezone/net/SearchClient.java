@@ -5,38 +5,44 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.preference.PreferenceManager;
-import android.support.v4.content.FileProvider;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -53,14 +59,9 @@ import smk.adzikro.moviezone.provider.MovieFavorites;
 
 public class SearchClient  {
 
-    private AsyncHttpClient client;
     public static final String BASE_MOVIE_URL = "https://api.themoviedb.org/3/";
-    private static final String BASE_GOOGLE_URL = "https://www.googleapis.com/customsearch/v1?";
     public static final String API_KEY = BuildConfig.API_KEY;
-    private static final String API_GOOGLE = BuildConfig.API_GOOGLE;
-    private static final String CX_KEY = BuildConfig.CX_GOOGLE;
-    public static final String IMG_URL = "http://image.tmdb.org/t/p/";
-    public static int[] poster_size = { 92, 154, 185, 342, 500, 780 };
+    public static final String IMG_URL = "https://image.tmdb.org/t/p/";
     public static final int UPCOMING =0;//"movie/upcoming?";
     public static final int NOWPLAYING =1;//"movie/now_playing?";
     public static final int SEARCHING =2;//search/movie?";
@@ -78,7 +79,16 @@ public class SearchClient  {
     public static final int PEOPLE_ONTV =14;///movie/id";
     public static final int EPISODE_ONTV =15;///movie/id";
     public static final int LISTPOPULARPERSON =16;
+    private static final String BASE_GOOGLE_URL = "https://www.googleapis.com/customsearch/v1?";
+    private static final String API_GOOGLE = BuildConfig.API_GOOGLE;
+    private static final String CX_KEY = BuildConfig.CX_GOOGLE;
+    public static int[] poster_size = {92, 154, 185, 342, 500, 780};
     private static OkHttpClient mOkHttpClient;
+    private AsyncHttpClient client;
+
+    public SearchClient() {
+        //  this.client = new AsyncHttpClient();
+    }
 
     public static String getImagePath(Context context){
         String x = getKualitasImage(context);
@@ -96,6 +106,7 @@ public class SearchClient  {
             }
         return IMG_URL+h;
     }
+
     public static String getImagePathBesar(Context context){
         String x = getKualitasImage(context);
         String h="";
@@ -111,13 +122,6 @@ public class SearchClient  {
                 break;
             }
         return IMG_URL+h;
-    }
-    public SearchClient(){
-      //  this.client = new AsyncHttpClient();
-    }
-
-    private String getApiUrlGoogle(){
-        return BASE_GOOGLE_URL+"&cx="+CX_KEY+"&key="+API_GOOGLE;
     }
 
     private static String getApiUrlMovie(int aksi, int page, String id_movie){
@@ -179,7 +183,6 @@ public class SearchClient  {
         return hasil;
     }
 
-
     public static String getInet(int aksi, String id_movie, final String query, int starPage, Context context){
         String url;
         try{
@@ -211,18 +214,22 @@ public class SearchClient  {
 
         return mOkHttpClient;
     }
+
     public static boolean getAdult(Context context){
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
         return preference.getBoolean("adult",true);
     }
+
     public static boolean getTampilan(Context context){
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
         return preference.getBoolean("view",true);
     }
+
     public static int getTampil(Context context){
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
         return preference.getInt("tampil",0);
     }
+
     public static void setTampil(Context context, int tampil){
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor =preference.edit();
@@ -234,6 +241,7 @@ public class SearchClient  {
         SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
         return preference.getString("kualitasimage","1");
     }
+
     public static JSONObject getJSONObject(Context context, String url) {
         final OkHttpClient client = getOkHttpClient(context);
 
@@ -267,34 +275,40 @@ public class SearchClient  {
             return fallback;
         }
     }
+
     public static void loadImage(Context context, String url, final ImageView imageView, final ProgressBar progressBar){
         Glide.with(context).load(SearchClient.getImagePathBesar(context)+url)
                 .thumbnail(0.5f)
-                .crossFade()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .listener(new RequestListener<String, GlideDrawable>() {
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         progressBar.setVisibility(View.GONE);
                         imageView.setVisibility(View.VISIBLE);
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         imageView.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
                         return false;
                     }
                 })
-                .into(new SimpleTarget<GlideDrawable>() {
+                .into(new CustomTarget<Drawable>() {
                     @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         imageView.setImageDrawable(resource);
                         imageView.setDrawingCacheEnabled(true);
                     }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
                 });
     }
+
     public static void addMovieFavorite(Context context, Movie p){
         ContentValues values = new ContentValues();
         values.put(MovieDatabase.FIELD_ID, p.getId());
@@ -328,6 +342,7 @@ public class SearchClient  {
             Toast.makeText(context, p.getTitle() + " succsess add to favorite", Toast.LENGTH_LONG).show();
         }
     }
+
     public static void share(Context context,String url){
         try {
             File sdcard = Environment.getExternalStorageDirectory();
@@ -343,6 +358,7 @@ public class SearchClient  {
         } catch (Exception e) { Log.e("share",e.toString());
         }
     }
+
     public static void shareLink(Context context,String url){
         try {
             Intent i = new Intent(Intent.ACTION_SEND);
@@ -355,6 +371,7 @@ public class SearchClient  {
         } catch (Exception e) { Log.e("share",e.toString());
         }
     }
+
     public static String getToken(Context context){
         String token="";
 
@@ -362,14 +379,15 @@ public class SearchClient  {
         return token;
     }
 
-
     public static void saveImage(final Context context, final String url){
         Glide.with(context)
-                .load(getImagePathBesar(context)+url)
                 .asBitmap()
-                .toBytes(Bitmap.CompressFormat.JPEG, 80)
-                .into(new SimpleTarget<byte[]>() {
-                    @Override public void onResourceReady(final byte[] resource, GlideAnimation<? super byte[]> glideAnimation) {
+                .load(getImagePathBesar(context)+url)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull final Bitmap resource, @Nullable final Transition<? super Bitmap> transition) {
+                        saveImg(resource);
+                        /*
                         new AsyncTask<Void, Void, Void>() {
                             @Override
                             protected Void doInBackground(Void... params) {
@@ -382,11 +400,11 @@ public class SearchClient  {
                                         throw new IOException("Cannot ensure parent directory for file " + file);
                                     }
                                     BufferedOutputStream s = new BufferedOutputStream(new FileOutputStream(file));
-                                    s.write(resource);
+                                    s.write(transition);
                                     s.flush();
                                     s.close();
-                                          Log.e("Simpan", "Sukses disimpan ke "+file);
-                                   // Toast.makeText(context, file+" Success saved..",Toast.LENGTH_SHORT).show();
+                                    Log.e("Simpan", "Sukses disimpan ke "+file);
+                                    // Toast.makeText(context, file+" Success saved..",Toast.LENGTH_SHORT).show();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -395,9 +413,63 @@ public class SearchClient  {
                             @Override
                             protected void onPostExecute(Void v){
 
-                          }
-                        }.execute();
+                            }
+                        }.execute(); */
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
                     }
                 });
+
+    }
+    private static void saveImg(Bitmap image) {
+        String savedImagePath = null;
+
+        String imageFileName = "JPEG_" + image.toString() + ".jpg";
+        File storageDir = new File(            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                + "/movie_zone/image");
+        boolean success = true;
+        if (!storageDir.exists()) {
+            success = storageDir.mkdirs();
+        }
+        if (success) {
+            File imageFile = new File(storageDir, imageFileName);
+            savedImagePath = imageFile.getAbsolutePath();
+            try {
+                OutputStream fOut = new FileOutputStream(imageFile);
+                image.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                fOut.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Add the image to the system gallery
+            galleryAddPic(savedImagePath);
+            //Toast.makeText(mContext, "IMAGE SAVED", Toast.LENGTH_LONG).show();
+        }
+       // return savedImagePath;
+    }
+    public void write(Context context, String fileName, Bitmap bitmap) {
+        FileOutputStream outputStream;
+        try {
+            outputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.close();
+        } catch (Exception error) {
+            error.printStackTrace();
+        }
+    }
+    private static void galleryAddPic(String imagePath) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        File f = new File(imagePath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+       // sendBroadcast(mediaScanIntent);
+    }
+
+    private String getApiUrlGoogle() {
+        return BASE_GOOGLE_URL + "&cx=" + CX_KEY + "&key=" + API_GOOGLE;
     }
 }

@@ -16,10 +16,8 @@
 
 package smk.adzikro.moviezone.objek;
 
-import android.app.LoaderManager;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -29,13 +27,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import smk.adzikro.moviezone.net.SearchClient;
-import smk.adzikro.moviezone.utils.StringUtils;
-
 
 public class Actor implements Parcelable {
 
-	private static final String TAG ="Actor" ;
+    public static final Creator<Actor> CREATOR = new Creator<Actor>() {
+        @Override
+        public Actor createFromParcel(Parcel source) {
+            return new Actor(source);
+        }
+
+        @Override
+        public Actor[] newArray(int size) {
+            return new Actor[size];
+        }
+    };
+    private static final String TAG ="Actor" ;
 	private String mName, mCharacter, mId, mUrl, birthday, imdb_id, biography,
 			placebirth, photo, mati;
 	private List<String> images = new ArrayList<>();
@@ -43,17 +49,10 @@ public class Actor implements Parcelable {
 	private List<Casting> castings = new ArrayList<>();
 	private List<Tv> acaraTv = new ArrayList<>();
 
-	public List<Tv> getAcaraTv() {
-		return acaraTv;
-	}
-
-	public void setAcaraTv(List<Tv> acaraTv) {
-		this.acaraTv = acaraTv;
-	}
-
 	public Actor(Boolean asal){
 
 	}
+
 	public Actor(JSONObject object, Boolean asaltiCast){
 		try {
 			setmId(object.getString("id"));
@@ -63,15 +62,14 @@ public class Actor implements Parcelable {
 			Log.e(TAG,e.getMessage());
 		}
 	}
-
 	public Actor(JSONObject object) {
 		try {
 			Log.e(TAG,"Actor Create "+object.getString("id"));
 
 			setmName(object.getString("name"));
-			setmId(object.getString("id"));;
-			setPhoto(object.getString("profile_path"));
-			setBiography(object.getString("biography"));
+            setmId(object.getString("id"));
+            setPhoto(object.getString("profile_path"));
+            setBiography(object.getString("biography"));
 			setBirthday(object.getString("birthday"));
 			setPlacebirth(object.getString("place_of_birth"));
 			setImdb_id(object.getString("imdb_id"));
@@ -110,6 +108,31 @@ public class Actor implements Parcelable {
 			e.getStackTrace();
 		}
 	}
+
+    protected Actor(Parcel in) {
+        this.mName = in.readString();
+        this.mCharacter = in.readString();
+        this.mId = in.readString();
+        this.mUrl = in.readString();
+        this.birthday = in.readString();
+        this.imdb_id = in.readString();
+        this.biography = in.readString();
+        this.placebirth = in.readString();
+        this.photo = in.readString();
+        this.mati = in.readString();
+        this.images = in.createStringArrayList();
+        this.crews = in.createTypedArrayList(Crew.CREATOR);
+        this.castings = in.createTypedArrayList(Casting.CREATOR);
+        this.acaraTv = in.createTypedArrayList(Tv.CREATOR);
+    }
+
+    public List<Tv> getAcaraTv() {
+        return acaraTv;
+    }
+
+    public void setAcaraTv(List<Tv> acaraTv) {
+        this.acaraTv = acaraTv;
+    }
 
 	public String getmName() {
 		return mName;
@@ -237,33 +260,4 @@ public class Actor implements Parcelable {
 		dest.writeTypedList(this.castings);
 		dest.writeTypedList(this.acaraTv);
 	}
-
-	protected Actor(Parcel in) {
-		this.mName = in.readString();
-		this.mCharacter = in.readString();
-		this.mId = in.readString();
-		this.mUrl = in.readString();
-		this.birthday = in.readString();
-		this.imdb_id = in.readString();
-		this.biography = in.readString();
-		this.placebirth = in.readString();
-		this.photo = in.readString();
-		this.mati = in.readString();
-		this.images = in.createStringArrayList();
-		this.crews = in.createTypedArrayList(Crew.CREATOR);
-		this.castings = in.createTypedArrayList(Casting.CREATOR);
-		this.acaraTv = in.createTypedArrayList(Tv.CREATOR);
-	}
-
-	public static final Creator<Actor> CREATOR = new Creator<Actor>() {
-		@Override
-		public Actor createFromParcel(Parcel source) {
-			return new Actor(source);
-		}
-
-		@Override
-		public Actor[] newArray(int size) {
-			return new Actor[size];
-		}
-	};
 }

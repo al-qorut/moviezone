@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+
 import java.util.List;
+
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.activity.DetailTvActivity;
 import smk.adzikro.moviezone.net.SearchClient;
@@ -31,6 +33,10 @@ import smk.adzikro.moviezone.objek.Tv;
 
 public class FragmentDetailTvInfo extends Fragment {
     private static final String KEY="FragmentDetailTvInfo";
+    TextView tx_rate, tx_review, tx_firstDate, tx_lastDate, tx_network,
+            tx_created, tx_type, tx_status, tx_similar, tx_other;
+    private Tv tv;
+    private RecyclerView trailer, similar;
 
     public static FragmentDetailTvInfo newInstance(Tv tv){
         FragmentDetailTvInfo info = new FragmentDetailTvInfo();
@@ -39,7 +45,7 @@ public class FragmentDetailTvInfo extends Fragment {
         info.setArguments(bundle);
         return info;
     }
-    private Tv tv;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle bundle){
         super.onCreateView(inflater,parent,bundle);
@@ -52,25 +58,22 @@ public class FragmentDetailTvInfo extends Fragment {
         putValue();
         return view;
     }
-    TextView tx_rate, tx_review, tx_firstDate, tx_lastDate,tx_network,
-            tx_created, tx_type, tx_status, tx_similar, tx_other;
-    private RecyclerView trailer, similar;
 
     private void init(View view){
-        tx_rate = (TextView)view.findViewById(R.id.tx_rating);
-        tx_review = (TextView)view.findViewById(R.id.tx_review);
-        tx_firstDate= (TextView)view.findViewById(R.id.tx_first_date);
-        tx_lastDate = (TextView)view.findViewById(R.id.tx_last_date);
-        tx_network = (TextView)view.findViewById(R.id.tx_networks);
-        tx_created = (TextView)view.findViewById(R.id.tx_created);
-        tx_type = (TextView)view.findViewById(R.id.tx_type);
-        tx_status = (TextView)view.findViewById(R.id.tx_status);
-        tx_similar = (TextView)view.findViewById(R.id.tx_similar);
-        tx_other = (TextView)view.findViewById(R.id.other_from);
+        tx_rate = view.findViewById(R.id.tx_rating);
+        tx_review = view.findViewById(R.id.tx_review);
+        tx_firstDate = view.findViewById(R.id.tx_first_date);
+        tx_lastDate = view.findViewById(R.id.tx_last_date);
+        tx_network = view.findViewById(R.id.tx_networks);
+        tx_created = view.findViewById(R.id.tx_created);
+        tx_type = view.findViewById(R.id.tx_type);
+        tx_status = view.findViewById(R.id.tx_status);
+        tx_similar = view.findViewById(R.id.tx_similar);
+        tx_other = view.findViewById(R.id.other_from);
         tx_other.setVisibility(View.GONE);
         tx_similar.setText("Similar TV Shows");
-        trailer = (RecyclerView)view.findViewById(R.id.list_movie);
-        similar = (RecyclerView)view.findViewById(R.id.list_similar);
+        trailer = view.findViewById(R.id.list_movie);
+        similar = view.findViewById(R.id.list_similar);
         trailer.setHasFixedSize(true);
         trailer.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.HORIZONTAL,false));
         similar.setHasFixedSize(true);
@@ -132,8 +135,8 @@ public class FragmentDetailTvInfo extends Fragment {
             TextView txTitle;
             public Holder(View itemView) {
                 super(itemView);
-                videoView = (ImageView) itemView.findViewById(R.id.video);
-                txTitle = (TextView)itemView.findViewById(R.id.title_video);
+                videoView = itemView.findViewById(R.id.video);
+                txTitle = itemView.findViewById(R.id.title_video);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -188,8 +191,8 @@ public class FragmentDetailTvInfo extends Fragment {
             TextView txTitle;
             public Holder(View itemView) {
                 super(itemView);
-                videoView = (ImageView) itemView.findViewById(R.id.video);
-                txTitle = (TextView)itemView.findViewById(R.id.title_video);
+                videoView = itemView.findViewById(R.id.video);
+                txTitle = itemView.findViewById(R.id.title_video);
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

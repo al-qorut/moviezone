@@ -12,6 +12,17 @@ import org.json.JSONObject;
  */
 
 public class TrailerTv implements Parcelable {
+    public static final Parcelable.Creator<TrailerTv> CREATOR = new Parcelable.Creator<TrailerTv>() {
+        @Override
+        public TrailerTv createFromParcel(Parcel source) {
+            return new TrailerTv(source);
+        }
+
+        @Override
+        public TrailerTv[] newArray(int size) {
+            return new TrailerTv[size];
+        }
+    };
     String id, name, source, type;
     public TrailerTv(JSONObject object){
         try {
@@ -23,6 +34,14 @@ public class TrailerTv implements Parcelable {
             Log.e("TrailerTV",e.getMessage());
         }
     }
+
+    protected TrailerTv(Parcel in) {
+        this.id = in.readString();
+        this.name = in.readString();
+        this.source = in.readString();
+        this.type = in.readString();
+    }
+
     public String getId() {
         return id;
     }
@@ -67,23 +86,4 @@ public class TrailerTv implements Parcelable {
         dest.writeString(this.source);
         dest.writeString(this.type);
     }
-
-    protected TrailerTv(Parcel in) {
-        this.id = in.readString();
-        this.name = in.readString();
-        this.source = in.readString();
-        this.type = in.readString();
-    }
-
-    public static final Parcelable.Creator<TrailerTv> CREATOR = new Parcelable.Creator<TrailerTv>() {
-        @Override
-        public TrailerTv createFromParcel(Parcel source) {
-            return new TrailerTv(source);
-        }
-
-        @Override
-        public TrailerTv[] newArray(int size) {
-            return new TrailerTv[size];
-        }
-    };
 }

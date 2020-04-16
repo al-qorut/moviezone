@@ -7,15 +7,23 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import smk.adzikro.moviezone.net.SearchClient;
-
 /**
  * Created by server on 11/19/17.
  */
 
 public class Pencarian implements Parcelable {
-    String id, mediaType, name, poster, release;
+    public static final Parcelable.Creator<Pencarian> CREATOR = new Parcelable.Creator<Pencarian>() {
+        @Override
+        public Pencarian createFromParcel(Parcel source) {
+            return new Pencarian(source);
+        }
 
+        @Override
+        public Pencarian[] newArray(int size) {
+            return new Pencarian[size];
+        }
+    };
+    String id, mediaType, name, poster, release;
     public Pencarian(JSONObject object){
         try {
             setId(object.getString("id"));
@@ -39,6 +47,18 @@ public class Pencarian implements Parcelable {
             Log.e("Pencarian","Aya Erto "+e.getMessage());
         }
     }
+
+    public Pencarian() {
+    }
+
+    protected Pencarian(Parcel in) {
+        this.id = in.readString();
+        this.mediaType = in.readString();
+        this.name = in.readString();
+        this.poster = in.readString();
+        this.release = in.readString();
+    }
+
     public String getId() {
         return id;
     }
@@ -92,27 +112,4 @@ public class Pencarian implements Parcelable {
         dest.writeString(this.poster);
         dest.writeString(this.release);
     }
-
-    public Pencarian() {
-    }
-
-    protected Pencarian(Parcel in) {
-        this.id = in.readString();
-        this.mediaType = in.readString();
-        this.name = in.readString();
-        this.poster = in.readString();
-        this.release = in.readString();
-    }
-
-    public static final Parcelable.Creator<Pencarian> CREATOR = new Parcelable.Creator<Pencarian>() {
-        @Override
-        public Pencarian createFromParcel(Parcel source) {
-            return new Pencarian(source);
-        }
-
-        @Override
-        public Pencarian[] newArray(int size) {
-            return new Pencarian[size];
-        }
-    };
 }

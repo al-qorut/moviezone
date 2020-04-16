@@ -1,11 +1,9 @@
 package smk.adzikro.moviezone.loader;
 
-import android.support.v4.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
 
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.SyncHttpClient;
+import androidx.loader.content.AsyncTaskLoader;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,9 +11,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
 import smk.adzikro.moviezone.net.SearchClient;
-import smk.adzikro.moviezone.objek.Movie;
 import smk.adzikro.moviezone.objek.Tv;
 
 /**
@@ -23,9 +19,9 @@ import smk.adzikro.moviezone.objek.Tv;
  */
 
 public class GetTvTaskLoader extends AsyncTaskLoader<ArrayList<Tv>> {
-    ArrayList<Tv> mData = new ArrayList<>();
-    public boolean hasResult = false;
     private static final String TAG ="GetTvTaskLoader";
+    public boolean hasResult = false;
+    ArrayList<Tv> mData = new ArrayList<>();
     private int code=SearchClient.TVAIRINGTODAY;
     private int page=1;
     private Context context;

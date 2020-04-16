@@ -18,8 +18,8 @@ import smk.adzikro.moviezone.objek.Movie;
 
 
 public class GridAdapter extends BaseAdapter {
-    private ArrayList<Movie> listMovie = new ArrayList<>();
     Context context;
+    private ArrayList<Movie> listMovie = new ArrayList<>();
 
     public GridAdapter(Context context){
 
@@ -50,8 +50,8 @@ public class GridAdapter extends BaseAdapter {
             final LayoutInflater layoutInflater = LayoutInflater.from(context);
             convertView = layoutInflater.inflate(R.layout.grid_layout,null );
         }
-            ImageView imageView = (ImageView) convertView.findViewById(R.id.image);
-            TextView textView = (TextView) convertView.findViewById(R.id.title);
+        ImageView imageView = convertView.findViewById(R.id.image);
+        TextView textView = convertView.findViewById(R.id.title);
             Glide.with(context).load(movie.getCover())
                     .thumbnail(0.5f)
                     .override(350, 550)

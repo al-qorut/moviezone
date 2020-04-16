@@ -1,30 +1,33 @@
 package smk.adzikro.moviezone.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import smk.adzikro.moviezone.R;
-import smk.adzikro.moviezone.activity.SlideImageActivity;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.IconPagerAdapter;
 
@@ -61,13 +64,13 @@ public class ViewImagePagerAdapter extends FragmentPagerAdapter implements
     public static class FragmentImage extends Fragment {
         private static final String KEY = "FragmentImage:Content" ;
         private String link;
+        private String mContent = "????";
 
         public static FragmentImage newInstance(String s){
             FragmentImage fragmentImage = new FragmentImage();
             fragmentImage.link=s;
             return fragmentImage;
         }
-        private String mContent="????";
 
         @Override
         public void onCreate(Bundle s){
@@ -91,30 +94,33 @@ public class ViewImagePagerAdapter extends FragmentPagerAdapter implements
             return view;
         }
         private void loadImage(final ImageView imageView, final ProgressBar progressBar){
-            Glide.with(getContext()).load(SearchClient.getImagePathBesar(getContext())+link)
+            RequestOptions options = new RequestOptions()
+                    .centerCrop()
+                    .placeholder(R.mipmap.ic_launcher_round)
+                    .error(R.mipmap.ic_launcher_round);
+            Glide.with(getContext()).load(SearchClient.getImagePathBesar(getContext())+link).apply(options)
                     .thumbnail(0.5f)
-                    .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .listener(new RequestListener<String, GlideDrawable>() {
+                    .listener(new RequestListener<Drawable>() {
                         @Override
-                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            progressBar.setVisibility(View.GONE);
-                            imageView.setVisibility(View.VISIBLE);
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             return false;
                         }
 
                         @Override
-                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            imageView.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.GONE);
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             return false;
                         }
                     })
-                    .into(new SimpleTarget<GlideDrawable>() {
+                    .into(new CustomTarget<Drawable>() {
                         @Override
-                        public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            imageView.setImageDrawable(resource);
-                            imageView.setDrawingCacheEnabled(true);
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
                         }
                     });
         }

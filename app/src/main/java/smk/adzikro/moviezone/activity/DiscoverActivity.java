@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,10 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -31,15 +29,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import smk.adzikro.moviezone.BuildConfig;
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.custom.GridAutofitLayoutManager;
-import smk.adzikro.moviezone.fragments.FragmentPeopleCrew;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Movie;
 import smk.adzikro.moviezone.objek.Tv;
@@ -59,7 +54,18 @@ public class DiscoverActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     boolean pertama=true;
     ProgressBar loading;
+    ListMovie adapter;
     private ActionBar actionBar;
+
+    public static int getValueGenres(String gen_id) {
+        for (Map.Entry<String, Integer> entry : Movie.genre.entrySet()) {
+            if (entry.getKey().toUpperCase().equals(gen_id.toUpperCase())) {
+                return entry.getValue();
+            }
+        }
+        return 28;
+    }
+
     @Override
     protected void onCreate(Bundle s){
         super.onCreate(s);
@@ -177,17 +183,10 @@ public class DiscoverActivity extends AppCompatActivity {
         return xUrl;
     }
 
-    public static int getValueGenres(String gen_id) {
-        for (Map.Entry<String, Integer> entry : Movie.genre.entrySet()) {
-            if (entry.getKey().toUpperCase().equals(gen_id.toUpperCase())) {
-                return entry.getValue();
-            }
-        }
-        return 28;
-    }
     private int getListType(){
         return type.getSelectedItemPosition();
     }
+
     private ArrayList<Movie> getListMovie(){
         ArrayList<Movie> movieArrayList= new ArrayList<>();
         JSONObject object = SearchClient.getJSONObject(this, getUrl());
@@ -221,16 +220,32 @@ public class DiscoverActivity extends AppCompatActivity {
         }
         return tvArrayList;
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // getMenuInflater().inflate(R.menu.menu_poster, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int m = item.getItemId();
+        if (m == android.R.id.home) {
+            onBackPressed();
+        }
+        return true;
+    }
+
     public class GridDataHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
         TextView textView;
         public GridDataHolder(View view) {
             super(view);
-            imageView = (ImageView) view.findViewById(R.id.image);
-            textView = (TextView) view.findViewById(R.id.title);
+            imageView = view.findViewById(R.id.image);
+            textView = view.findViewById(R.id.title);
         }
     }
-    ListMovie adapter;
+
     private class AmbilData extends AsyncTask<Void, Void, Void>{
 
         @Override
@@ -330,19 +345,5 @@ public class DiscoverActivity extends AppCompatActivity {
         public int getItemCount() {
             return type==LIST_MOVIE?listMovie.size():listTv.size();
         }
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-       // getMenuInflater().inflate(R.menu.menu_poster, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        int m = item.getItemId();
-        if(m==android.R.id.home){
-            onBackPressed();
-        }
-        return true;
     }
 }

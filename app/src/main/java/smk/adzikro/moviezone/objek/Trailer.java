@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,10 +12,23 @@ import org.json.JSONObject;
  */
 
 public class Trailer implements Parcelable {
+    public static final Parcelable.Creator<Trailer> CREATOR = new Parcelable.Creator<Trailer>() {
+        @Override
+        public Trailer createFromParcel(Parcel source) {
+            return new Trailer(source);
+        }
+
+        @Override
+        public Trailer[] newArray(int size) {
+            return new Trailer[size];
+        }
+    };
     private static final String TAG ="Object Trailer" ;
     String name;
     String size;
     String source;
+    String type;
+
     public Trailer(JSONObject object){
             try {
                 //JSONArray jsonArray = object.getJSONArray("youtube");
@@ -29,6 +41,14 @@ public class Trailer implements Parcelable {
                 e.printStackTrace();
             }
     }
+
+    protected Trailer(Parcel in) {
+        this.name = in.readString();
+        this.size = in.readString();
+        this.source = in.readString();
+        this.type = in.readString();
+    }
+
     public String getName() {
         return name;
     }
@@ -61,8 +81,6 @@ public class Trailer implements Parcelable {
         this.type = type;
     }
 
-    String type;
-
     @Override
     public int describeContents() {
         return 0;
@@ -75,23 +93,4 @@ public class Trailer implements Parcelable {
         dest.writeString(this.source);
         dest.writeString(this.type);
     }
-
-    protected Trailer(Parcel in) {
-        this.name = in.readString();
-        this.size = in.readString();
-        this.source = in.readString();
-        this.type = in.readString();
-    }
-
-    public static final Parcelable.Creator<Trailer> CREATOR = new Parcelable.Creator<Trailer>() {
-        @Override
-        public Trailer createFromParcel(Parcel source) {
-            return new Trailer(source);
-        }
-
-        @Override
-        public Trailer[] newArray(int size) {
-            return new Trailer[size];
-        }
-    };
 }

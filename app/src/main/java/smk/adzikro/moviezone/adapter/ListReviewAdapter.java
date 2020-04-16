@@ -3,20 +3,15 @@ package smk.adzikro.moviezone.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import smk.adzikro.moviezone.R;
-import smk.adzikro.moviezone.objek.Actor;
 import smk.adzikro.moviezone.objek.Review;
 
 /**
@@ -59,10 +54,10 @@ public class ListReviewAdapter extends RecyclerView.Adapter<ListReviewAdapter.Ho
         TextView title, author, url, content;
         public Holder(View itemView) {
             super(itemView);
-            title = (TextView)itemView.findViewById(R.id.title);
-            author = (TextView)itemView.findViewById(R.id.author);
-            url = (TextView)itemView.findViewById(R.id.url);
-            content = (TextView)itemView.findViewById(R.id.content);
+            title = itemView.findViewById(R.id.title);
+            author = itemView.findViewById(R.id.author);
+            url = itemView.findViewById(R.id.url);
+            content = itemView.findViewById(R.id.content);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -3,15 +3,12 @@ package smk.adzikro.moviezone.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,12 +18,9 @@ import java.util.List;
 
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.activity.DetailMovieActivity;
-import smk.adzikro.moviezone.activity.DetailPeopleActivity;
 import smk.adzikro.moviezone.custom.GridAutofitLayoutManager;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Actor;
-import smk.adzikro.moviezone.objek.CastMovie;
-import smk.adzikro.moviezone.objek.Casting;
 import smk.adzikro.moviezone.objek.Crew;
 import smk.adzikro.moviezone.objek.Movie;
 
@@ -37,6 +31,7 @@ import smk.adzikro.moviezone.objek.Movie;
 public class FragmentPeopleCrew extends Fragment {
     public final static String KEY="nyieun";
     private static final String TAG ="FragmentPeopleCrew" ;
+    private Actor actor;
 
     public static FragmentPeopleCrew newInstance(Actor actor){
         Log.e(TAG,"Waktu di createView tah loba ");
@@ -46,13 +41,12 @@ public class FragmentPeopleCrew extends Fragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-    private Actor actor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle){
         View view = LayoutInflater.from(getContext()).inflate(R.layout.upcoming_layout, group, false);
         actor = getArguments().getParcelable(KEY);
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.list_movie);
+        RecyclerView recyclerView = view.findViewById(R.id.list_movie);
         recyclerView.setLayoutManager(new GridAutofitLayoutManager(getContext(),0));
         actor = getArguments().getParcelable(KEY);
         TampilGridCrew adapter = new TampilGridCrew(getContext(), actor.getCrews());
@@ -118,9 +112,9 @@ public class FragmentPeopleCrew extends Fragment {
             TextView nama, tahun;
             public Holder(View itemView) {
                 super(itemView);
-                photo = (ImageView) itemView.findViewById(R.id.image);
-                nama = (TextView)itemView.findViewById(R.id.title);
-                tahun = (TextView)itemView.findViewById(R.id.tahun);
+                photo = itemView.findViewById(R.id.image);
+                nama = itemView.findViewById(R.id.title);
+                tahun = itemView.findViewById(R.id.tahun);
             }
         }
     }

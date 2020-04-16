@@ -1,15 +1,16 @@
 package smk.adzikro.moviezone.widget;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 
 /**
  * Created by server on 11/13/17.
  */
 
-public class TopImageView extends android.support.v7.widget.AppCompatImageView {
+public class TopImageView extends AppCompatImageView {
 
 
     public TopImageView(Context context) {

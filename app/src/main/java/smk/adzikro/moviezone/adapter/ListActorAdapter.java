@@ -2,7 +2,7 @@ package smk.adzikro.moviezone.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +13,10 @@ import com.bumptech.glide.Glide;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import smk.adzikro.moviezone.activity.DetailMovieActivity;
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.activity.DetailPeopleActivity;
 import smk.adzikro.moviezone.net.SearchClient;
-import smk.adzikro.moviezone.objek.Actor;
 import smk.adzikro.moviezone.objek.CastMovie;
-import smk.adzikro.moviezone.objek.Movie;
 
 /**
  * Created by server on 11/16/17.
@@ -65,9 +62,9 @@ public class ListActorAdapter extends RecyclerView.Adapter<ListActorAdapter.Hold
         TextView nama, pemeran;
         public Holder(View itemView) {
             super(itemView);
-            photo = (CircleImageView)itemView.findViewById(R.id.id_photo);
-            nama = (TextView)itemView.findViewById(R.id.nama_actor);
-            pemeran = (TextView)itemView.findViewById(R.id.peran);
+            photo = itemView.findViewById(R.id.id_photo);
+            nama = itemView.findViewById(R.id.nama_actor);
+            pemeran = itemView.findViewById(R.id.peran);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

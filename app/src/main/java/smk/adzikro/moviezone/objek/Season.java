@@ -16,7 +16,53 @@ import java.util.List;
  */
 
 public class Season implements Parcelable {
+    public static final Creator<Season> CREATOR = new Creator<Season>() {
+        @Override
+        public Season createFromParcel(Parcel source) {
+            return new Season(source);
+        }
+
+        @Override
+        public Season[] newArray(int size) {
+            return new Season[size];
+        }
+    };
     String id, airdate, name, poster, number, jmlEpisode;
+    List<Episode> episodes = new ArrayList<>();
+
+    public Season(JSONObject object) {
+        try {
+            setId(object.getString("id"));
+            setAirdate(object.getString("air_date"));
+            setName(object.getString("name"));
+            setPoster(object.getString("poster_path"));
+            setNumber(object.getString("season_number"));
+            JSONArray jsonArray = object.getJSONArray("episodes");
+            if (jsonArray.length() > 0) {
+                List<Episode> episodes1 = new ArrayList<>();
+                int x = 0;
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    Episode episode = new Episode(jsonArray.getJSONObject(i));
+                    episodes1.add(episode);
+                    x++;
+                }
+                setEpisodes(episodes1);
+                setJmlEpisode(String.valueOf(x));
+            }
+        } catch (JSONException e) {
+            Log.e("Season", "Eroor " + e.getMessage());
+        }
+    }
+
+    protected Season(Parcel in) {
+        this.id = in.readString();
+        this.airdate = in.readString();
+        this.name = in.readString();
+        this.poster = in.readString();
+        this.number = in.readString();
+        this.jmlEpisode = in.readString();
+        this.episodes = in.createTypedArrayList(Episode.CREATOR);
+    }
 
     public String getJmlEpisode() {
         return jmlEpisode;
@@ -66,31 +112,6 @@ public class Season implements Parcelable {
         this.number = number;
     }
 
-    public Season(JSONObject object) {
-        try{
-            setId(object.getString("id"));
-            setAirdate(object.getString("air_date"));
-            setName(object.getString("name"));
-            setPoster(object.getString("poster_path"));
-            setNumber(object.getString("season_number"));
-            JSONArray jsonArray = object.getJSONArray("episodes");
-            if(jsonArray.length()>0){
-                List<Episode> episodes1 = new ArrayList<>();
-                int x=0;
-                for (int i=0;i<jsonArray.length();i++){
-                    Episode episode = new Episode(jsonArray.getJSONObject(i));
-                    episodes1.add(episode);
-                    x++;
-                }
-                setEpisodes(episodes1);
-                setJmlEpisode(String.valueOf(x));
-            }
-        }catch (JSONException e){
-            Log.e("Season","Eroor "+e.getMessage());
-        }
-    }
-    List<Episode> episodes = new ArrayList<>();
-
     public List<Episode> getEpisodes() {
         return episodes;
     }
@@ -114,26 +135,4 @@ public class Season implements Parcelable {
         dest.writeString(this.jmlEpisode);
         dest.writeTypedList(this.episodes);
     }
-
-    protected Season(Parcel in) {
-        this.id = in.readString();
-        this.airdate = in.readString();
-        this.name = in.readString();
-        this.poster = in.readString();
-        this.number = in.readString();
-        this.jmlEpisode = in.readString();
-        this.episodes = in.createTypedArrayList(Episode.CREATOR);
-    }
-
-    public static final Creator<Season> CREATOR = new Creator<Season>() {
-        @Override
-        public Season createFromParcel(Parcel source) {
-            return new Season(source);
-        }
-
-        @Override
-        public Season[] newArray(int size) {
-            return new Season[size];
-        }
-    };
 }

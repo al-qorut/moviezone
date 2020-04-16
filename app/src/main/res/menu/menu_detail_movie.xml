@@ -4,11 +4,11 @@
     <item
         android:id="@+id/action_share"
         android:icon="@android:drawable/ic_menu_share"
-        app:showAsAction="always"
-        android:title="@string/tab_share"/>
+        android:title="@string/tab_share"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_favorite"
         android:icon="@drawable/ic_heart_outline_white_24dp"
-        app:showAsAction="always"
-        android:title="@string/tab_favorite"/>
+        android:title="@string/tab_favorite"
+        app:showAsAction="always" />
 </menu>

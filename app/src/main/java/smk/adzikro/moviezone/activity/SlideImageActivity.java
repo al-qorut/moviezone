@@ -5,10 +5,10 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,23 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
-
-import java.io.File;
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.adapter.ViewImagePagerAdapter;
-import smk.adzikro.moviezone.custom.CirclePageIndicator;
-import smk.adzikro.moviezone.fragments.FragmentPersonPopular;
 import smk.adzikro.moviezone.net.SearchClient;
 
 /**
@@ -40,13 +28,14 @@ import smk.adzikro.moviezone.net.SearchClient;
  */
 
 public class SlideImageActivity extends AppCompatActivity {
-    private List<String> images=new ArrayList<>();
+    public final static String KEY = "simpan";
     TextView info;
     ViewPager pager;
     ImageView imageView;
-    public final static String KEY="simpan";
-    private ActionBar ab;
     int pos=0;
+    private List<String> images = new ArrayList<>();
+    private ActionBar ab;
+
     @Override
     protected void onCreate(Bundle saveInstanState){
         super.onCreate(saveInstanState);
@@ -55,9 +44,9 @@ public class SlideImageActivity extends AppCompatActivity {
         ab=getSupportActionBar();
         ab.setDisplayShowHomeEnabled(true);
         ab.setDisplayHomeAsUpEnabled(true);
-        pager = (ViewPager)findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
       //  imageView = (ImageView)findViewById(R.id.image);
-        info=(TextView)findViewById(R.id.info);
+        info = findViewById(R.id.info);
         if(saveInstanState!=null){
             images = saveInstanState.getStringArrayList(KEY);
         }else{

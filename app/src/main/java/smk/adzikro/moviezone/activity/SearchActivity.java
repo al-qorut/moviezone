@@ -2,28 +2,29 @@ package smk.adzikro.moviezone.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,11 +32,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import smk.adzikro.moviezone.R;
 import smk.adzikro.moviezone.custom.GridAutofitLayoutManager;
-import smk.adzikro.moviezone.fragments.FragmentListMovie;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Actor;
 import smk.adzikro.moviezone.objek.Movie;
@@ -56,12 +55,13 @@ public class SearchActivity extends AppCompatActivity
     private TextView tx_hasil;
     private Toolbar toolbar;
     private ActionBar actionBar;
+    private int jmlPage = 0, total_result = 0;
 
     @Override
     protected void onCreate(Bundle save){
         super.onCreate(save);
         setContentView(R.layout.layout_hasil_pencarian);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
        // actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
@@ -72,9 +72,9 @@ public class SearchActivity extends AppCompatActivity
         }else{
             query = getIntent().getStringExtra(KEY_QUERY);
         }
-        recyclerView = (RecyclerView)findViewById(R.id.list_movie);
+        recyclerView = findViewById(R.id.list_movie);
         recyclerView.setLayoutManager(new GridAutofitLayoutManager(this,0));
-        tx_hasil = (TextView)findViewById(R.id.result);
+        tx_hasil = findViewById(R.id.result);
         new sokCokotData().execute();
         recyclerView.setVisibility(View.VISIBLE);
 
@@ -86,9 +86,6 @@ public class SearchActivity extends AppCompatActivity
         super.onSaveInstanceState(bundle);
 
     }
-
-
-    private int jmlPage=0, total_result=0;
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -173,15 +170,20 @@ public class SearchActivity extends AppCompatActivity
             holder.year.setText(t[0]);
             Glide.with(context).load(SearchClient.getImagePath(context)+p.getPoster())
                     .thumbnail(0.5f)
-                    .crossFade()
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(new SimpleTarget<GlideDrawable>() {
+                    .into(new CustomTarget<Drawable>() {
                         @Override
-                        public void onResourceReady(GlideDrawable glideDrawable, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                            holder.imageView.setImageDrawable(glideDrawable);
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            holder.imageView.setImageDrawable(resource);
                             holder.imageView.setDrawingCacheEnabled(true);
                         }
+
+                        @Override
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                        }
                     });
+
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -221,9 +223,9 @@ public class SearchActivity extends AppCompatActivity
             TextView title, year;
             public Holder(View itemView) {
                 super(itemView);
-                imageView = (ImageView)itemView.findViewById(R.id.image);
-                title = (TextView)itemView.findViewById(R.id.title);
-                year =(TextView)itemView.findViewById(R.id.tahun);
+                imageView = itemView.findViewById(R.id.image);
+                title = itemView.findViewById(R.id.title);
+                year = itemView.findViewById(R.id.tahun);
             }
         }
     }

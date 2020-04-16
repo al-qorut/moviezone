@@ -1,7 +1,7 @@
 package smk.adzikro.moviezone.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,6 @@ import smk.adzikro.moviezone.activity.DetailMovieActivity;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Movie;
 import smk.adzikro.moviezone.objek.OtherFromDirector;
-import smk.adzikro.moviezone.objek.SimilarMovie;
 
 /**
  * Created by server on 11/27/17.
@@ -59,8 +58,8 @@ extends RecyclerView.Adapter<ListOtherFrom.Holder>{
         TextView txTitle;
         public Holder(View itemView) {
             super(itemView);
-            imageView = (ImageView) itemView.findViewById(R.id.video);
-            txTitle = (TextView)itemView.findViewById(R.id.title_video);
+            imageView = itemView.findViewById(R.id.video);
+            txTitle = itemView.findViewById(R.id.title_video);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

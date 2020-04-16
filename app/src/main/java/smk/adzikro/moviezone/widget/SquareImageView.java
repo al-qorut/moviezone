@@ -18,9 +18,10 @@ package smk.adzikro.moviezone.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
-public class SquareImageView  extends android.support.v7.widget.AppCompatImageView {
+import androidx.appcompat.widget.AppCompatImageView;
+
+public class SquareImageView  extends AppCompatImageView {
 
     public SquareImageView(Context context) {
         super(context);

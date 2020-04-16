@@ -1,11 +1,8 @@
 package smk.adzikro.moviezone.loader;
 
 import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
+import androidx.loader.content.AsyncTaskLoader;
 import android.util.Log;
-
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.SyncHttpClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,8 +10,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import cz.msebera.android.httpclient.Header;
-import smk.adzikro.moviezone.fragments.FragmentPersonPopular;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Movie;
 
@@ -23,9 +18,9 @@ import smk.adzikro.moviezone.objek.Movie;
  */
 
 public class GetMovieTaskLoader extends AsyncTaskLoader<ArrayList<Movie>> {
-    private ArrayList<Movie> mData;
-    public boolean hasResult = false;
     private static final String TAG ="GetMovieTaskLoader";
+    public boolean hasResult = false;
+    private ArrayList<Movie> mData;
     private String txtCariMovie;
     private int code=0;
     private int page=1, totPage;

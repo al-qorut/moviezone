@@ -1,9 +1,9 @@
 package smk.adzikro.moviezone.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +20,8 @@ import smk.adzikro.moviezone.objek.Movie;
 public class FagrmentReviews extends Fragment {
     public final static String KEY="nyieunReview";
     private static final String TAG ="FragmentReview" ;
+    private RecyclerView recyclerView;
+    private Movie movie;
 
     public static FagrmentReviews newInstance(Movie actor){
         Log.e(TAG,"Waktu di createView Review");
@@ -29,13 +31,11 @@ public class FagrmentReviews extends Fragment {
         fragment.setArguments(bundle);
         return fragment;
     }
-    private RecyclerView recyclerView;
-    private Movie movie;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle){
         View view = LayoutInflater.from(getContext()).inflate(R.layout.detail_list_actor, group, false);
-        recyclerView = (RecyclerView)view.findViewById(R.id.list_actor);
+        recyclerView = view.findViewById(R.id.list_actor);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         movie = getArguments().getParcelable(KEY);

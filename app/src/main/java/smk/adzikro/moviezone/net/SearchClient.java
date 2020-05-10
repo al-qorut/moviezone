@@ -58,7 +58,7 @@ import smk.adzikro.moviezone.provider.MovieFavorites;
  */
 
 public class SearchClient  {
-
+//http://www.omdbapi.com/?t=Iron+Man&y=&plot=short&tomatoes=true&r=json
     public static final String BASE_MOVIE_URL = "https://api.themoviedb.org/3/";
     public static final String API_KEY = BuildConfig.API_KEY;
     public static final String IMG_URL = "https://image.tmdb.org/t/p/";
@@ -308,7 +308,10 @@ public class SearchClient  {
                     }
                 });
     }
-
+    public static void removeFavorite(Context context, Movie p){
+        Toast.makeText(context, p.getTitle() + " Favorite Movie has remove ", Toast.LENGTH_LONG).show();
+        context.getContentResolver().delete(MovieFavorites.CONTENT_URI, MovieDatabase.FIELD_ID+"="+p.getId(),null);
+    }
     public static void addMovieFavorite(Context context, Movie p){
         ContentValues values = new ContentValues();
         values.put(MovieDatabase.FIELD_ID, p.getId());
@@ -320,6 +323,8 @@ public class SearchClient  {
         MovieDatabase movieDatabase = new MovieDatabase(context);
         if(movieDatabase.isMovie(p.getId())){
             Toast.makeText(context, p.getTitle() + " has added in Favorite Movie ", Toast.LENGTH_LONG).show();
+            //context.getContentResolver().
+            context.getContentResolver().delete(MovieFavorites.CONTENT_URI, MovieDatabase.FIELD_ID+"="+p.getId(),null);
         }else {
             context.getContentResolver().insert(MovieFavorites.CONTENT_URI, values);
             Toast.makeText(context, p.getTitle() + " succsess add to favorite", Toast.LENGTH_LONG).show();
@@ -345,12 +350,10 @@ public class SearchClient  {
 
     public static void share(Context context,String url){
         try {
-            File sdcard = Environment.getExternalStorageDirectory();
-            File file = new File(sdcard +"/Moviezone/gambar"+url);
+            //File sdcard = Environment.getExternalStorageDirectory();
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
             i.putExtra(Intent.EXTRA_SUBJECT, R.string.app_name);
-            i.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context,BuildConfig.APPLICATION_ID + ".provider", file));
             String sAux ="Movie Zone\n "+context.getString(R.string.app_link);
             i.putExtra(Intent.EXTRA_TEXT, sAux);
 
@@ -387,34 +390,6 @@ public class SearchClient  {
                     @Override
                     public void onResourceReady(@NonNull final Bitmap resource, @Nullable final Transition<? super Bitmap> transition) {
                         saveImg(resource);
-                        /*
-                        new AsyncTask<Void, Void, Void>() {
-                            @Override
-                            protected Void doInBackground(Void... params) {
-                                File sdcard = Environment.getExternalStorageDirectory();
-                                File file = new File(sdcard +"/Moviezone/gambar"+url);
-                                File dir = file.getParentFile();
-                                //    Log.e(TAG, "Sukses disimpan ke "+file);
-                                try {
-                                    if (!dir.mkdirs() && (!dir.exists() || !dir.isDirectory())) {
-                                        throw new IOException("Cannot ensure parent directory for file " + file);
-                                    }
-                                    BufferedOutputStream s = new BufferedOutputStream(new FileOutputStream(file));
-                                    s.write(transition);
-                                    s.flush();
-                                    s.close();
-                                    Log.e("Simpan", "Sukses disimpan ke "+file);
-                                    // Toast.makeText(context, file+" Success saved..",Toast.LENGTH_SHORT).show();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                return null;
-                            }
-                            @Override
-                            protected void onPostExecute(Void v){
-
-                            }
-                        }.execute(); */
                     }
 
                     @Override
@@ -447,7 +422,7 @@ public class SearchClient  {
 
             // Add the image to the system gallery
             galleryAddPic(savedImagePath);
-            //Toast.makeText(mContext, "IMAGE SAVED", Toast.LENGTH_LONG).show();
+          //  Toast.makeText(, "IMAGE SAVED", Toast.LENGTH_LONG).show();
         }
        // return savedImagePath;
     }

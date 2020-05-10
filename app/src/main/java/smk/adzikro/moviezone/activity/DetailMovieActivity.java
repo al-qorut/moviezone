@@ -105,7 +105,8 @@ implements
         isfavorite=movieDatabase.isMovie(movie.getId());
         Bundle bundle = new Bundle();
         bundle.putParcelable("movie",movie);
-        getSupportLoaderManager().initLoader(1001,bundle,this);
+        LoaderManager.getInstance(this).initLoader(1001,bundle,this);
+        //getSupportLoaderManager().initLoader(1001,bundle,this);
         init();
     }
     private void loadImage(final ImageView imageView, final ProgressBar progressBar, int posisi){
@@ -268,7 +269,15 @@ implements
           //  Toast.makeText(this,"Share \n"+R.string.drawer_header_text,Toast.LENGTH_SHORT).show();
             SearchClient.shareLink(this, "movie/"+movie.getId());
         }else if(m==R.id.action_favorite){
-            SearchClient.addMovieFavorite(this, movie);
+            if(isfavorite) {
+                SearchClient.removeFavorite(this,movie);
+                item.setIcon(R.drawable.ic_heart_outline_white_24dp);
+                isfavorite = false;
+            }else {
+                item.setIcon(R.drawable.ic_favorite_black_24dp);
+                SearchClient.addMovieFavorite(this, movie);
+                isfavorite = true;
+            }
         }
     return true;
     }
@@ -296,7 +305,8 @@ implements
     public void onLoadFinished(Loader<Movie> loader, Movie data) {
 //        Log.e(TAG,"onLoadFinished Jumlah Actor "+data.getActors().size());
         this.movie = data;
-    //    Log.e(TAG,"onLoadFinished Jumlah Actor dari movie "+movie.getActors().size());
+        Log.e(TAG,"onLoadFinished Jumlah Poster dari movie "+movie.getListPoster().size());
+        Log.e(TAG,"onLoadFinished Jumlah backPoster dari movie "+movie.getListBackDrop().size());
         onFinishLoad();
     }
 
@@ -310,7 +320,8 @@ implements
         pagerBawah.setVisibility(View.GONE);
         Bundle bundle = new Bundle();
         bundle.putParcelable("movie",movie);
-        getSupportLoaderManager().restartLoader(1001,bundle,this);
+
+        LoaderManager.getInstance(this).restartLoader(1001,bundle,this);
     }
     public void loadDetailActor(Actor actor){
         Bundle bundle = new Bundle();
@@ -327,11 +338,15 @@ implements
 
     @Override
     public void onClick(View v) {
+
         if(v.getId()==R.id.photo){
+            Log.e(TAG, "Ada poster "+movie.getListPoster().size());
             Intent intent = new Intent(DetailMovieActivity.this, SlideImageActivity.class);
+
             intent.putStringArrayListExtra(SlideImageActivity.KEY, (ArrayList<String>) movie.getListPoster());
             startActivity(intent);
         }else if(v.getId()==R.id.slidingImage){
+            Log.e(TAG, "Ada poster Back "+movie.getListPoster().size());
             Intent intent = new Intent(DetailMovieActivity.this, SlideImageActivity.class);
             intent.putStringArrayListExtra(SlideImageActivity.KEY, (ArrayList<String>) movie.getListBackDrop());
             startActivity(intent);

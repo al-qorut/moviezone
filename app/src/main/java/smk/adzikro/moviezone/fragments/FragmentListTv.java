@@ -113,7 +113,8 @@ public class FragmentListTv extends Fragment implements
     public void onResume(){
         Log.e(TAG,"onResume dipanggil");
         super.onResume();
-        getActivity().getSupportLoaderManager().initLoader(aksi,null,this);
+       // getActivity().getSupportLoaderManager().initLoader(aksi,null,this);
+        LoaderManager.getInstance(this).initLoader(aksi,null,this);
     }
 
     @Override
@@ -148,7 +149,8 @@ public class FragmentListTv extends Fragment implements
         mData.add(null);
         adapter.notifyItemInserted(mData.size()-1);
         page++;
-        getActivity().getSupportLoaderManager().restartLoader(aksi,null,this);
+     //   getActivity().getSupportLoaderManager().restartLoader(aksi,null,this);
+        LoaderManager.getInstance(this).restartLoader(aksi,null,this);
     }
 
     @Override

@@ -24,16 +24,19 @@ import android.widget.ProgressBar;
 import java.util.ArrayList;
 
 import smk.adzikro.moviezone.R;
+import smk.adzikro.moviezone.activity.MainActivity;
 import smk.adzikro.moviezone.adapter.FavoriteAdapter;
 import smk.adzikro.moviezone.databasehelper.MovieDatabase;
+import smk.adzikro.moviezone.objek.Movie;
 import smk.adzikro.moviezone.objek.MovieFavorite;
+import smk.adzikro.moviezone.objek.OnItemClickListener;
 import smk.adzikro.moviezone.provider.MovieFavorites;
 
 /**
  * Created by server on 10/22/17.
  */
 
-public class fragment_favorite extends Fragment {
+public class fragment_favorite extends Fragment  {
     private static final String TAG = "Favorite";
     private FavoriteAdapter adapter;
     private RecyclerView listMovie;
@@ -49,6 +52,7 @@ public class fragment_favorite extends Fragment {
         listMovie = (RecyclerView) view.findViewById(R.id.list_movie);
         loading = (ProgressBar) view.findViewById(R.id.loading);
         loading.setVisibility(View.VISIBLE);
+
       //  Button button = (Button) view.findViewById(R.id.refresh);
         listMovie.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
@@ -114,6 +118,9 @@ public class fragment_favorite extends Fragment {
         new LoadData().execute();
         super.onStart();
     }
+
+
+
     private class LoadData extends AsyncTask<Void, Void,Void> {
 
         @Override

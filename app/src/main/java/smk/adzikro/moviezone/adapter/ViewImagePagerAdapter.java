@@ -2,6 +2,7 @@ package smk.adzikro.moviezone.adapter;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,9 +41,10 @@ public class ViewImagePagerAdapter extends FragmentPagerAdapter implements
         IconPagerAdapter {
     List<String> IMAGE_CONTENT = new ArrayList<>();
 //    private int mCount = IMAGE_CONTENT.length;
-
+    private String TAG="ViewImagePagerAdapter";
     public ViewImagePagerAdapter(FragmentManager fm, List<String> data) {
-        super(fm);
+        super(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        Log.e(TAG, "tah datana "+data.size());
         IMAGE_CONTENT = data;
     }
 
@@ -94,10 +96,15 @@ public class ViewImagePagerAdapter extends FragmentPagerAdapter implements
             return view;
         }
         private void loadImage(final ImageView imageView, final ProgressBar progressBar){
-            RequestOptions options = new RequestOptions()
+            Glide.with(this)
+                    .load(SearchClient.getImagePathBesar(getContext())+link)
+                    .into(imageView);
+
+       /*     RequestOptions options = new RequestOptions()
                     .centerCrop()
                     .placeholder(R.mipmap.ic_launcher_round)
                     .error(R.mipmap.ic_launcher_round);
+
             Glide.with(getContext()).load(SearchClient.getImagePathBesar(getContext())+link).apply(options)
                     .thumbnail(0.5f)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -122,7 +129,7 @@ public class ViewImagePagerAdapter extends FragmentPagerAdapter implements
                         public void onLoadCleared(@Nullable Drawable placeholder) {
 
                         }
-                    });
+                    }); */
         }
     }
 }

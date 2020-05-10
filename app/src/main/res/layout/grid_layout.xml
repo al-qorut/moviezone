@@ -13,12 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center"
+        android:textColor="@color/white"
         android:gravity="center"
         tools:text="Ini Title" />
     <TextView
         android:id="@+id/tahun"
         android:layout_width="match_parent"
         android:layout_height="20dp"
+        android:textColor="@color/white"
         android:layout_gravity="center"
         android:gravity="center"
         tools:text="Tahun" />

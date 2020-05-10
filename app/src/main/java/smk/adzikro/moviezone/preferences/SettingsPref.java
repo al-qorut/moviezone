@@ -1,20 +1,16 @@
 package smk.adzikro.moviezone.preferences;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.preference.Preference;
 import android.provider.Settings;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import android.preference.PreferenceFragment;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 
 import smk.adzikro.moviezone.R;
 
@@ -37,7 +33,7 @@ public class SettingsPref extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         Fragment fragment1 = fm.findFragmentById(R.id.content);
         if(fragment1==null) {
             fm.beginTransaction()
@@ -47,7 +43,7 @@ public class SettingsPref extends AppCompatActivity {
     }
 
     @SuppressLint("ValidFragment")
-    private static class PrefsFragment extends PreferenceFragment {
+    public static class PrefsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -61,6 +57,11 @@ public class SettingsPref extends AppCompatActivity {
                     return true;
                 }
             });
+        }
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+
         }
     }
 

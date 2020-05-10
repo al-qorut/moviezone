@@ -32,6 +32,9 @@ android {
             renderscriptDebuggable true
             zipAlignEnabled true
         }
+        debug{
+            multiDexEnabled = true
+        }
     }
     buildTypes.each {
         it.buildConfigField 'String', 'API_KEY', api_key
@@ -62,9 +65,10 @@ dependencies {
     implementation 'com.loopj.android:android-async-http:1.4.9'
     //implementation 'com.google.gms:google-services:4.3.3'
     //web
+    implementation 'com.google.android.gms:play-services-ads:19.1.0'
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-
+    implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation "androidx.work:work-runtime-ktx:2.3.4"
     implementation 'androidx.palette:palette:1.0.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'

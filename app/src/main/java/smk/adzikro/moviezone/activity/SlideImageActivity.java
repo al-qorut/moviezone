@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class SlideImageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle saveInstanState){
         super.onCreate(saveInstanState);
+        Log.e("SlideImageActivity","onCreate");
         setContentView(R.layout.slide_picture);
         setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
         ab=getSupportActionBar();
@@ -52,6 +54,11 @@ public class SlideImageActivity extends AppCompatActivity {
         }else{
             images = getIntent().getStringArrayListExtra(KEY);
             pos = getIntent().getIntExtra("index",0);
+        }
+        Log.e("SlideImageActivity","onCreate "+images.size());
+        if(images.size()==0 || images.size()<1){
+            Toast.makeText(this,"Poster not available..",Toast.LENGTH_SHORT).show();
+            finish();
         }
         ViewImagePagerAdapter adapter = new ViewImagePagerAdapter(getSupportFragmentManager(), images);
         pager.setAdapter(adapter);
@@ -94,38 +101,16 @@ public class SlideImageActivity extends AppCompatActivity {
         if(m==android.R.id.home){
             onBackPressed();
         }else if(m==R.id.action_share){
-            new setShare().execute();
+           // new setShare().execute();
+
+            SearchClient.shareLink(SlideImageActivity.this,images.get(pager.getCurrentItem()));
         }else if(m==R.id.action_download){
-            Toast.makeText(this,"download success..",Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(this,"download success..",Toast.LENGTH_SHORT).show();
             SearchClient.saveImage(this, images.get(pager.getCurrentItem()));
+            Toast.makeText(this,"download success..",Toast.LENGTH_SHORT).show();
         }
         return true;
     }
 
-    class setShare extends AsyncTask<Void, Integer, Void> {
-        ProgressDialog dialog;
-        String path= Environment.getExternalStorageDirectory()+"/Moviezone/gambar"+images.get(pager.getCurrentItem()) ;
 
-        @Override
-        protected void onPreExecute() {
-
-            dialog = new ProgressDialog(SlideImageActivity.this);
-            dialog.setMessage("Share...");
-            Log.e("E-Info Share","PreExecute");
-            dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            SearchClient.saveImage(SlideImageActivity.this, images.get(pager.getCurrentItem()));
-            dialog.show();
-        }
-        @Override
-        protected Void doInBackground(Void... params) {
-            Log.e("E-Info Share","DoInBackGround");
-            SearchClient.share(SlideImageActivity.this,path);
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-            dialog.dismiss();
-
-        }
-    }
 }

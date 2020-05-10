@@ -28,6 +28,9 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -41,24 +44,45 @@ import smk.adzikro.moviezone.custom.SlidingTabLayout;
 import smk.adzikro.moviezone.net.SearchClient;
 import smk.adzikro.moviezone.objek.Movie;
 import smk.adzikro.moviezone.preferences.SettingsPref;
+import smk.adzikro.moviezone.utils.RateMeMaybe;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+implements RateMeMaybe.OnRMMUserChoiceListener {
     private static final String TAG = "MainActivity";
     private DrawerLayout mDrawerLayout;
     Toolbar toolbar;
     NavigationView navigationView;
     ActionBar actionBar;
     BottomNavigationView bottomNavigationView;
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         cekPermision();
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         if (savedInstanceState != null) {
 
         }
         init();
+        mAdView.setAdListener( new AdListener(){
+            @Override
+            public void onAdFailedToLoad(int erroCode){
+                mAdView.setVisibility(View.GONE);
+                Log.e(TAG, "Error mAdview "+erroCode);
+            }
+            @Override
+            public void onAdLoaded(){
+                if(SearchClient.getTampil(MainActivity.this)!=0) {
+                    mAdView.setVisibility(View.VISIBLE);
+                }else{
+                    mAdView.setVisibility(View.GONE);
+                }
+            }
+        });
     }
     SlidingTabLayout tab;
     ViewPager pager;
@@ -93,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), TitleMovie,5);
         pager.setAdapter(pagerAdapter);
         tab.setViewPager(pager);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -104,8 +129,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.e("Main","tab seaching");
                 } else if ((item.getTitle().equals(getString(R.string.home)))) {
                    new login().execute();
+                }else if ((item.getTitle().equals(getString(R.string.nav_sub_menu_rate)))) {
+                    rate();
                 }else if ((item.getTitle().equals(getString(R.string.nav_sub_menu_about)))) {
                     startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                }else if ((item.getTitle().equals(getString(R.string.tab_share)))) {
+                    SearchClient.share(MainActivity.this,"");
                 }else if ((item.getTitle().equals(getString(R.string.nav_item_setting)))) {
                     startActivity(new Intent(MainActivity.this, SettingsPref.class));
                     Log.e("Main","setting");
@@ -251,7 +280,39 @@ public class MainActivity extends AppCompatActivity {
  }
 
  String token;
- private class login extends AsyncTask<Void,Void,Void>{
+    private void rate() {
+        RateMeMaybe.resetData(this);
+        RateMeMaybe rmm = new RateMeMaybe(this);
+        rmm.setPromptMinimums(0, 0, 0, 0);
+        rmm.setRunWithoutPlayStore(true);
+        rmm.setAdditionalListener(this);
+        rmm.setDialogMessage("Kalau suka dan bermanfaat "
+                + "silahkan rate aplikasinya");
+        rmm.setDialogTitle("Rate..");
+        rmm.setPositiveBtn("OK!");
+        rmm.run();
+    }
+    @Override
+    public void handlePositive() {
+        Log.e(TAG,"Positif");
+    }
+
+    @Override
+    public void handleNeutral() {
+        Log.e(TAG,"Neutral");
+    }
+
+    @Override
+    public void handleNegative() {
+        Log.e(TAG,"Negatif");
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        Log.e(TAG,"onPointer");
+    }
+
+    private class login extends AsyncTask<Void,Void,Void>{
         @Override
         protected Void doInBackground(Void... voids) {
            String url ="https://api.themoviedb.org/3/authentication/token/new?api_key="+SearchClient.API_KEY;

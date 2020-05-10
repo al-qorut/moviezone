@@ -1,5 +1,6 @@
 package smk.adzikro.moviezone.fragments;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -27,6 +28,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 
@@ -49,13 +54,14 @@ public class FragmentListMovie extends Fragment implements
         OnItemClickListener {
 
     public static final String TAG = "FragmentListMovie" ;
+    public static final  int ITEMS_PER_AD = 5;
     int page = 1, aksi, tampil;
     String query;
     private MovieListAdapter adapter;
     private RecyclerView listMovie;
-    private ProgressBar loading;
-    private ArrayList<Movie> mData =new ArrayList<>();
-    private boolean loadingPertama=true;
+  //  private ProgressBar loading;
+    private ArrayList<Object> mData =new ArrayList<>();
+  //  private boolean loadingPertama=true;
 
     public static FragmentListMovie newInstance(int aksi, String query){
         FragmentListMovie fragmentListMovie = new FragmentListMovie();
@@ -82,14 +88,45 @@ public class FragmentListMovie extends Fragment implements
             listMovie.setLayoutManager(new GridAutofitLayoutManager(getContext(), 0));
         }
         listMovie.setHasFixedSize(true);
-        loading = view.findViewById(R.id.loading);
-        loading.setVisibility(View.VISIBLE);
+     //   loading = view.findViewById(R.id.loading);
+      //  loading.setVisibility(View.VISIBLE);
         listMovie.setVisibility(View.GONE);
 
         adapter = new MovieListAdapter(SearchClient.getTampil(getContext()));
         adapter.setOnLoadMoreListener(this);
         adapter.setOnItemClickListener(this);
         return view;
+    }
+    private void loadBanerAds(){
+        loadBanerAd(0);
+    }
+
+    private void loadBanerAd(final int index){
+        if(index>=mData.size()){
+            return;
+        }
+        if(index%ITEMS_PER_AD!=0){
+            return;
+        }
+        Object item = mData.get(index);
+        if(!(item instanceof AdView)){
+            throw new ClassCastException("Expected item at index " + index + " to be a banner ad");
+        }
+        final AdView adView = (AdView) item;
+        adView.setAdListener(new AdListener(){
+            @Override
+            public void onAdLoaded(){
+                loadBanerAd(index + ITEMS_PER_AD );
+            }
+
+            @Override
+            public void onAdFailedToLoad(int e){
+                Log.e(TAG,"Erot "+e);
+                loadBanerAd(index + ITEMS_PER_AD );
+            }
+
+        });
+        adView.loadAd(new AdRequest.Builder().build());
     }
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -112,7 +149,8 @@ public class FragmentListMovie extends Fragment implements
     public void onResume(){
         Log.e(TAG,"onResume dipanggil");
         super.onResume();
-        getActivity().getSupportLoaderManager().initLoader(aksi,null,this);
+        LoaderManager.getInstance(this).initLoader(aksi,null,this);
+        //getActivity().getSupportLoaderManager().initLoader(aksi,null,this);
     }
 
     @Override
@@ -122,8 +160,9 @@ public class FragmentListMovie extends Fragment implements
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Movie>> loader, ArrayList<Movie> data) {
+        Log.e(TAG,"onLoadFinished dipanggil");
         if(data.size()==0)return;
-        if (!loadingPertama) {
+       /* if (!loadingPertama) {
             mData.remove(mData.size() - 1);
             adapter.notifyItemRemoved(mData.size());
         } else {
@@ -131,11 +170,25 @@ public class FragmentListMovie extends Fragment implements
             listMovie.setAdapter(adapter);
             loading.setVisibility(View.GONE);
             listMovie.setVisibility(View.VISIBLE);
+        } */
+        if(tampil!=0){
+            mData.addAll(data);
+        }else {
+            for (int i = 0; i < data.size(); i++) {
+                if (i % ITEMS_PER_AD == 0) {
+                //    Log.e(TAG,"Tah anu asup Ads "+i);
+                    final AdView adView = new AdView(getContext());
+                    adView.setAdSize(AdSize.LARGE_BANNER);
+                    adView.setAdUnitId(getString(R.string.baner));
+                    mData.add(adView);
+                } else {
+                    mData.add(data.get(i));
+                }
+            }
+          //  loadBanerAds();
         }
-        //for (int i = 0; i < data.size(); i++) {
-        //    mData.add(data.get(i));
-       // }
-        mData.addAll(data);
+      //  mData.addAll(data);
+        listMovie.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         adapter.setLoaded();
         listMovie.setVisibility(View.VISIBLE);
@@ -149,10 +202,13 @@ public class FragmentListMovie extends Fragment implements
 
     @Override
     public void onLoadMore() {
+        Log.e(TAG, "onLoadMore "+page);
         mData.add(null);
         adapter.notifyItemInserted(mData.size()-1);
-        page++;
-        getActivity().getSupportLoaderManager().restartLoader(aksi,null,this);
+     //   page++;
+        LoaderManager.getInstance(this).restartLoader(aksi,null,this);
+        adapter.setLoaded();
+        //getActivity().getSupportLoaderManager().restartLoader(aksi,null,this);
     }
 
     @Override
@@ -171,19 +227,20 @@ public class FragmentListMovie extends Fragment implements
         if (tampil != 0) {
             tampil = 0;
             item.setIcon(R.drawable.view_grid);
-            listMovie.setLayoutManager(new LinearLayoutManager(getContext()));
+         //   listMovie.setLayoutManager(new LinearLayoutManager(getContext()));
             SearchClient.setTampil(getContext(), MovieListAdapter.VIEW_TYPE_ITEM);
-            adapter.setType(MovieListAdapter.VIEW_TYPE_ITEM);
+         //   adapter.setType(MovieListAdapter.VIEW_TYPE_ITEM);
         } else {
             tampil = 2;
-            listMovie.setLayoutManager(new GridAutofitLayoutManager(getContext(), 0));
+          //  listMovie.setLayoutManager(new GridAutofitLayoutManager(getContext(), 0));
             SearchClient.setTampil(getContext(), MovieListAdapter.VIEW_TYPE_GRID);
             item.setIcon(R.drawable.view_list);
-            adapter.setType(MovieListAdapter.VIEW_TYPE_GRID);
+         //   adapter.setType(MovieListAdapter.VIEW_TYPE_GRID);
         }
-        adapter.notifyDataSetChanged();
+        ((MainActivity) getActivity()).recreate();
         return true;
     }
+
 
     public class ListDataHolder extends RecyclerView.ViewHolder
     {
@@ -201,6 +258,7 @@ public class FragmentListMovie extends Fragment implements
 
     }
 
+
     public class ListLoadingHolder extends RecyclerView.ViewHolder{
         ProgressBar progressBar;
 
@@ -209,6 +267,13 @@ public class FragmentListMovie extends Fragment implements
             progressBar = view.findViewById(R.id.loadmore);
         }
     }
+
+    public class AdViewHolder extends RecyclerView.ViewHolder{
+        AdViewHolder(View view){
+            super(view);
+        }
+    }
+
 
     public class GridDataHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
@@ -220,10 +285,15 @@ public class FragmentListMovie extends Fragment implements
         }
     }
 
+    /*--------------------------------------------------------*/
+    /*Adafater*/
+    /*--------------------------------------------------------*/
     class MovieListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             implements View.OnClickListener{
+
         public static final int VIEW_TYPE_ITEM = 0;
         public static final int VIEW_TYPE_GRID = 2;
+        public static final int VIEW_TYPE_ADS = 3;
         private final int VIEW_TYPE_LOADING = 1;
         private OnLoadMoreListener onLoadMoreListener;
         private OnItemClickListener onItemClickListener;
@@ -250,7 +320,7 @@ public class FragmentListMovie extends Fragment implements
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     super.onScrolled(recyclerView, dx, dy);
 
-                    if(!loadingPertama&&!isLoading && totalItem <= (lastTampilItem+visibleThreshold)){
+                    if(!isLoading && totalItem <= (lastTampilItem+visibleThreshold)){
                         if(onLoadMoreListener !=null){
                             onLoadMoreListener.onLoadMore();
                         }
@@ -259,6 +329,7 @@ public class FragmentListMovie extends Fragment implements
                 }
             });
         }
+
         public void setType(int type){
             this.type = type;
         }
@@ -275,6 +346,9 @@ public class FragmentListMovie extends Fragment implements
             }else if(viewType==VIEW_TYPE_LOADING){
                 View view = LayoutInflater.from(getContext()).inflate(R.layout.load_more,parent,false);
                 return new ListLoadingHolder(view);
+            }else if(viewType==VIEW_TYPE_ADS){
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.banner_ad_container,parent,false);
+                return new AdViewHolder(view);
             }
             return null;
         }
@@ -287,16 +361,26 @@ public class FragmentListMovie extends Fragment implements
         }
         @Override
         public int getItemViewType(int pos){
-            int VIEW_NAON=type==VIEW_TYPE_ITEM?VIEW_TYPE_ITEM:VIEW_TYPE_GRID;
+            int VIEW_NAON=VIEW_TYPE_LOADING;
+            if(type==VIEW_TYPE_GRID){
+                VIEW_NAON = VIEW_TYPE_GRID;
+            }else if(type==VIEW_TYPE_ITEM){
+                if(pos%5==0){
+                    VIEW_NAON = VIEW_TYPE_ADS;
+                }else {
+                    VIEW_NAON = VIEW_TYPE_ITEM;
+                }
+            }
             return mData.get(pos)==null?VIEW_TYPE_LOADING:VIEW_NAON;
         }
 
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-            final Movie p = mData.get(position);
+
 
             if(holder instanceof ListDataHolder) {
              //   Log.e(TAG,"ListDataHolder "+SearchClient.getImagePath(getContext())+p.getCover());
+                final Movie p = (Movie) mData.get(position);
                 Glide.with(getContext()).load(SearchClient.getImagePath(getContext())+p.getCover())
                         .thumbnail(0.5f)
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -320,6 +404,7 @@ public class FragmentListMovie extends Fragment implements
                 ((ListDataHolder)holder).txRating.setText(p.getRating());
             }else if(holder instanceof GridDataHolder){
               //  Log.e(TAG,"GridDataHolder");
+                final Movie p = (Movie) mData.get(position);
                 ((GridDataHolder)holder).itemView.setTag(p);
                 ((GridDataHolder)holder).textView.setText(p.getTitle());
                 Glide.with(getContext()).load(SearchClient.getImagePath(getContext())+p.getCover())
@@ -340,6 +425,17 @@ public class FragmentListMovie extends Fragment implements
             }else if(holder instanceof ListLoadingHolder){
                // Log.e(TAG,"ListLoadingHolder");
                 ((ListLoadingHolder)holder).progressBar.setIndeterminate(true);
+            }else if(holder instanceof AdViewHolder){
+                AdViewHolder adViewHolder = (AdViewHolder) holder;
+                AdView adView = (AdView) mData.get(position);
+                ViewGroup adCard = (ViewGroup) adViewHolder.itemView;
+                if(adCard.getChildCount()>0){
+                    adCard.removeAllViews();
+                }
+                if(adView.getParent() !=null){
+                    ((ViewGroup) adView.getParent()).removeView(adView);
+                }
+                adCard.addView(adView);
             }
         }
 
